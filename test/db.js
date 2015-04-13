@@ -9,4 +9,13 @@ describe('Database Tests', function() {
 		done();
 	});
 
+	it('should create new user', function(done) {
+		var testDatabase = new Database("test");
+
+		//testDatabase.userDAO.createUser('TestUser', null);
+
+
+		done();
+	});
+
 });
