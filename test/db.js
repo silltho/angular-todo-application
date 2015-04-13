@@ -12,9 +12,11 @@ describe('Database Tests', function() {
 	it('should create new user', function(done) {
 		var testDatabase = new Database("test");
 
-		//testDatabase.userDAO.createUser('TestUser', null);
+		testDatabase.userDAO.createUser('TestUser', null);
 
-
+		testDatabase.userDAO.getDB().count({}, function(err, count) {
+			count.should.eql(1);
+		});
 		done();
 	});
 

@@ -1,11 +1,20 @@
 var Datastore = require('nedb');
 
-module.exports = function UserDAO(db_env){
+module.exports = function UserDAO(db_env) {
+	var db;
 
-	this.userdb = new Datastore({ filename: './db/'+db_env+'/users.db', autoload: true });
+	if(db_env == "test") {
+		db = new Datastore({ autoload: true });
+	} else {
+		db = new Datastore({ filename: 'users.db', autoload: true });
+	}
+
+	this.getDB = function() {
+		return db;
+	};
 
 	this.createUser = function(username, done){
-		this.userdb.find({ 'username' : username }, function(err, user) {
+		db.find({ 'username' : username }, function(err, user) {
 			if (err) {
 				console.log('error in finding user: ' + err + ' in db/userDAO.js');
 				return done(err);
@@ -14,8 +23,8 @@ module.exports = function UserDAO(db_env){
 				console.log('user with username = ' + username + ' already exists in db/userDAO.js');
 				return done(null, null);
 			} else {
-				var newUser = {username:username};
-				userdb.insert(newUser, function(err, newUser) {
+				var user = {username:username};
+				db.insert(user, function(err, newUser) {
 					if (err){
 						console.log('error in saving user: ' + err + ' in db/userDAO.js'); 
 						throw err; 
@@ -25,5 +34,5 @@ module.exports = function UserDAO(db_env){
 				});
 			}
 		});
-	}
+	};
 };
