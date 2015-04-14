@@ -17,9 +17,9 @@ module.exports = function TodoDAO(db_env) {
 		db.insert(todo, function(err, newTodo) {
 			if (err){
 				console.log('error in saving todo: ' + err + ' in db/todoDAO.js'); 
-				throw err; 
+				return done(err); 
 			}
-			console.log('create todo with description = ' + description + ' succesful in db/todoDAO.js');  
+			console.log('succesful create new todo with id = ' + newTodo._id + ' in db/todoDAO.js');  
 			return done(null, newTodo);
 		});
 	};
@@ -31,11 +31,21 @@ module.exports = function TodoDAO(db_env) {
 				return done(err);
 			}
 			if (todos.length == 0) {
-				console.log('no todo found with: ' + searchParams + ' in db/userDAO.js');
+				console.log('no todo found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/todoDAO.js');
 				return done(null, false);
 			}
-			console.log(todos.length + ' todos found with: ' + searchParams + ' in db/userDAO.js');
-			return done(null, users);
+			console.log(todos.length + ' todos found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/todoDAO.js');
+			return done(null, todos);
+		});
+	}
+
+	this.updateTodo = function(todo, done) {
+		db.update({ _id:todo._id }, todo, function (err, numReplaced) {
+			if (err) {
+				return done(err);
+			}
+			console.log('updated todo with id = ' + todo._id + ' in db/todoDAO.js');
+			return done(null, numReplaced);
 		});
 	}
 };

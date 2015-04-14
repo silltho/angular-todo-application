@@ -5,49 +5,92 @@ describe('DAO Tests', function() {
 
 	it('should create new user', function(done) {
 		var testUserDAO = createTestUserDAO();
+		var testUser = createTestUser();
 
-		testUserDAO.createUser('TestUser', null);
-
-		testUserDAO.getDB().count({}, function(err, count) {
-			count.should.eql(1);
+		testUserDAO.createUser(testUser, function() {
+			testUserDAO.getDB().count({}, function(err, count) {
+				count.should.eql(1);
+				done();
+			});
 		});
-		done();
 	});
 
 	it('should find user', function(done){
 		var testUserDAO = createTestUserDAO();
-		var testUser = 'TestUser';
-		testUserDAO.createUser(testUser, null);
+		var testUser = createTestUser();
 
-		testUserDAO.findUsers(testUser, function(err, foundUsers){
-			foundUsers.should.have.lengthOf(1);
-			foundUsers[0].username.should.be.testUser
+		testUserDAO.createUser(testUser, function(){
+			testUserDAO.findUsers(testUser, function(err, foundUsers) {
+				foundUsers.should.not.be.false;
+				foundUsers.should.have.lengthOf(1);
+				foundUsers[0].should.eql(testUser);
+				done(err);
+			});
+
 		});
-		done();
 	});
 
 	it('should create new todo', function(done) {
 		var testTodoDAO = createTestTodoDAO();
+		var testTodo = createTestTodo();
 
-		testTodoDAO.createTodo('Test-Todo', null);
-
-		testTodoDAO.getDB().count({}, function(err, count) {
-			count.should.eql(1);
+		testTodoDAO.createTodo(testTodo, function() {
+			testTodoDAO.getDB().count({}, function(err, count) {
+				count.should.eql(1);
+				done();
+			});
 		});
-		done();
 	});
 
 	it('should find todos', function(done){
 		var testTodoDAO = createTestTodoDAO();
-		var testTodo = 'Test-Todo';
-		testTodoDAO.createTodo(testTodo, null);
+		var testTodo = createTestTodo();
 
-		testTodoDAO.findTodos(testTodo, function(err, foundTodos){
-			foundTodos.should.have.lengthOf(1);
-			foundTodos[0].should.be.testTodo
-		});
-		done();
+		testTodoDAO.createTodo(testTodo, function() {
+			testTodoDAO.findTodos(testTodo, function(err, foundTodos) {
+				foundTodos.should.not.be.false;
+				foundTodos.should.have.lengthOf(1);
+				foundTodos[0].should.eql(testTodo);
+				done();
+			});	
+		});	
 	});
+
+	it('should update todo', function(done){
+		var testTodoDAO = createTestTodoDAO();
+		var testTodo = createTestTodo();
+
+		testTodoDAO.createTodo(testTodo, function() {
+			testTodoDAO.findTodos(testTodo, function(err, foundTodos) {
+				testTodo = foundTodos[0];
+				testTodo.description = 'TestTodo-updated';
+				console.log(testTodo);
+				testTodoDAO.updateTodo(testTodo, function(err, updatedTodoId) {
+					testTodoDAO.findTodos(testTodo,function(err, updatedTodos) {
+						updatedTodos.should.not.be.false;
+						updatedTodos.should.have.lengthOf(1);
+						updatedTodos[0].should.eql(testTodo);
+						done();
+					});
+				});	
+			});
+		});	
+	});
+
+	it('should delete todos', function(done){
+		var testTodoDAO = createTestTodoDAO();
+		var testTodo = createTestTodo();
+
+		testTodoDAO.createTodo(testTodo, function() {
+			testTodoDAO.deleteTodos(testTodo, function(err, foundTodos) {
+				foundTodos.should.not.be.false;
+				foundTodos.should.have.lengthOf(0);
+				foundTodos[0].should.eql(testTodo);
+				done();
+			});	
+		});	
+	});
+
 });
 
 function createTestDatabase() {
@@ -60,4 +103,12 @@ function createTestUserDAO() {
 
 function createTestTodoDAO() {
 	return createTestDatabase().getTodoDAO();
+}
+
+function createTestUser() {
+	return {username: 'TestUser'};
+}
+
+function createTestTodo() {
+	return {description: 'TestTodo'};
 }
