@@ -11,7 +11,7 @@ module.exports = function TodoDAO(db_env) {
 
 	this.getDB = function() {
 		return db;
-	};
+	}
 
 	this.createTodo = function(todo, done){
 		db.insert(todo, function(err, newTodo) {
@@ -22,10 +22,9 @@ module.exports = function TodoDAO(db_env) {
 			console.log('succesful create new todo with id = ' + newTodo._id + ' in db/todoDAO.js');  
 			return done(null, newTodo);
 		});
-	};
+	}
 
-
-	this.findTodos = function(searchParams, done) {
+	this.readTodos = function(searchParams, done) {
 		db.find(searchParams, function(err, todos) {
 			if (err) {
 				return done(err);
@@ -34,7 +33,7 @@ module.exports = function TodoDAO(db_env) {
 				console.log('no todo found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/todoDAO.js');
 				return done(null, false);
 			}
-			console.log(todos.length + ' todos found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/todoDAO.js');
+			console.log(todos.length + ' todos found in db/todoDAO.js');
 			return done(null, todos);
 		});
 	}
@@ -46,6 +45,16 @@ module.exports = function TodoDAO(db_env) {
 			}
 			console.log('updated todo with id = ' + todo._id + ' in db/todoDAO.js');
 			return done(null, numReplaced);
+		});
+	}
+
+	this.deleteTodo = function(todo, done) {
+		db.remove({ _id:todo._id }, {}, function(err) {
+			if (err) {
+				return done(err);
+			}
+			console.log('successfull delete todo in db/todoDAO.js');
+			done(null);
 		});
 	}
 };

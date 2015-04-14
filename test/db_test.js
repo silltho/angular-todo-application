@@ -20,7 +20,7 @@ describe('DAO Tests', function() {
 		var testUser = createTestUser();
 
 		testUserDAO.createUser(testUser, function(){
-			testUserDAO.findUsers(testUser, function(err, foundUsers) {
+			testUserDAO.readUsers(testUser, function(err, foundUsers) {
 				foundUsers.should.not.be.false;
 				foundUsers.should.have.lengthOf(1);
 				foundUsers[0].should.eql(testUser);
@@ -47,7 +47,7 @@ describe('DAO Tests', function() {
 		var testTodo = createTestTodo();
 
 		testTodoDAO.createTodo(testTodo, function() {
-			testTodoDAO.findTodos(testTodo, function(err, foundTodos) {
+			testTodoDAO.readTodos(testTodo, function(err, foundTodos) {
 				foundTodos.should.not.be.false;
 				foundTodos.should.have.lengthOf(1);
 				foundTodos[0].should.eql(testTodo);
@@ -61,12 +61,12 @@ describe('DAO Tests', function() {
 		var testTodo = createTestTodo();
 
 		testTodoDAO.createTodo(testTodo, function() {
-			testTodoDAO.findTodos(testTodo, function(err, foundTodos) {
+			testTodoDAO.readTodos(testTodo, function(err, foundTodos) {
 				testTodo = foundTodos[0];
 				testTodo.description = 'TestTodo-updated';
 				console.log(testTodo);
-				testTodoDAO.updateTodo(testTodo, function(err, updatedTodoId) {
-					testTodoDAO.findTodos(testTodo,function(err, updatedTodos) {
+				testTodoDAO.updateTodo(testTodo, function(err, numReplaced) {
+					testTodoDAO.readTodos(testTodo,function(err, updatedTodos) {
 						updatedTodos.should.not.be.false;
 						updatedTodos.should.have.lengthOf(1);
 						updatedTodos[0].should.eql(testTodo);
@@ -81,12 +81,14 @@ describe('DAO Tests', function() {
 		var testTodoDAO = createTestTodoDAO();
 		var testTodo = createTestTodo();
 
-		testTodoDAO.createTodo(testTodo, function() {
-			testTodoDAO.deleteTodos(testTodo, function(err, foundTodos) {
-				foundTodos.should.not.be.false;
-				foundTodos.should.have.lengthOf(0);
-				foundTodos[0].should.eql(testTodo);
-				done();
+		testTodoDAO.createTodo(testTodo, function(err, createdTodo) {
+			testTodo = createdTodo;
+			testTodoDAO.deleteTodo(testTodo, function(err) {
+				should.not.exist(err);
+				testTodoDAO.readTodos(testTodo, function(err, foundTodos) {
+					foundTodos.should.be.false;
+					done();
+				});
 			});	
 		});	
 	});

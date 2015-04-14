@@ -11,7 +11,7 @@ module.exports = function UserDAO(db_env) {
 
 	this.getDB = function() {
 		return db;
-	};
+	}
 
 	this.createUser = function(user, done){
 		db.find(user, function(err, users) {
@@ -33,10 +33,10 @@ module.exports = function UserDAO(db_env) {
 				});
 			}
 		});
-	};
+	}
 
 
-	this.findUsers = function(searchParams, done) {
+	this.readUsers = function(searchParams, done) {
 		db.find(searchParams, function(err, users) {
 			if (err) {
 				return done(err);
@@ -45,7 +45,7 @@ module.exports = function UserDAO(db_env) {
 				console.log('no user found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/userDAO.js');
 				return done(null, false);
 			}
-			console.log(users.length + ' users found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/userDAO.js');
+			console.log(users.length + ' users found in db/userDAO.js');
 			return done(null, users);
 		});
 	}
