@@ -1,23 +1,63 @@
 var should = require('should');
 var Database = require('../db/Database');
 
-describe('Database Tests', function() {
-	it('should open db connection', function(done) {
-		var testDatabase = new Database("test");
-
-		testDatabase.should.not.be.null;
-		done();
-	});
+describe('DAO Tests', function() {
 
 	it('should create new user', function(done) {
-		var testDatabase = new Database("test");
+		var testUserDAO = createTestUserDAO();
 
-		testDatabase.userDAO.createUser('TestUser', null);
+		testUserDAO.createUser('TestUser', null);
 
-		testDatabase.userDAO.getDB().count({}, function(err, count) {
+		testUserDAO.getDB().count({}, function(err, count) {
 			count.should.eql(1);
 		});
 		done();
 	});
 
+	it('should find user', function(done){
+		var testUserDAO = createTestUserDAO();
+		var testUser = 'TestUser';
+		testUserDAO.createUser(testUser, null);
+
+		testUserDAO.findUsers(testUser, function(err, foundUsers){
+			foundUsers.should.have.lengthOf(1);
+			foundUsers[0].username.should.be.testUser
+		});
+		done();
+	});
+
+	it('should create new todo', function(done) {
+		var testTodoDAO = createTestTodoDAO();
+
+		testTodoDAO.createTodo('Test-Todo', null);
+
+		testTodoDAO.getDB().count({}, function(err, count) {
+			count.should.eql(1);
+		});
+		done();
+	});
+
+	it('should find todos', function(done){
+		var testTodoDAO = createTestTodoDAO();
+		var testTodo = 'Test-Todo';
+		testTodoDAO.createTodo(testTodo, null);
+
+		testTodoDAO.findTodos(testTodo, function(err, foundTodos){
+			foundTodos.should.have.lengthOf(1);
+			foundTodos[0].should.be.testTodo
+		});
+		done();
+	});
 });
+
+function createTestDatabase() {
+	return new Database("test");
+}
+
+function createTestUserDAO() {
+	return createTestDatabase().getUserDAO();
+}
+
+function createTestTodoDAO() {
+	return createTestDatabase().getTodoDAO();
+}
