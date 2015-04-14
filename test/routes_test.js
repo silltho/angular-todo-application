@@ -8,11 +8,6 @@ describe('Routes Tests', function() {
 	it('should render index.ejs', function(done) {
 		request(router)
 			.get('/')
-			.expect(200)
-			.end(function(err, res){
-				console.log('1111');
-				if (err) return done(err);
-				done();
-			});
+			.expect(200, done);
 	});
 });
