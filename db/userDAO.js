@@ -6,7 +6,7 @@ module.exports = function UserDAO(db_env) {
 	if(db_env == "test") {
 		db = new Datastore({ autoload: true });
 	} else {
-		db = new Datastore({ filename: 'db/users.db', autoload: true });
+		db = new Datastore({ filename: 'db/db.db', autoload: true });
 	}
 
 	this.getDB = function() {
@@ -35,7 +35,6 @@ module.exports = function UserDAO(db_env) {
 		});
 	}
 
-
 	this.readUsers = function(searchParams, done) {
 		db.find(searchParams, function(err, users) {
 			if (err) {
@@ -47,6 +46,26 @@ module.exports = function UserDAO(db_env) {
 			}
 			console.log(users.length + ' users found in db/userDAO.js');
 			return done(null, users);
+		});
+	}
+
+	this.updateUser = function(user, done) {
+		db.update({ _id:user._id }, user, function (err, numReplaced) {
+			if (err) {
+				return done(err);
+			}
+			console.log('updated user with id = ' + user._id + ' in db/userDAO.js');
+			return done(null, numReplaced);
+		});
+	}
+
+	this.deleteUser = function(user, done) {
+		db.remove({ _id:user._id }, {}, function(err) {
+			if (err) {
+				return done(err);
+			}
+			console.log('successfull delete user in db/userDAO.js');
+			done(null);
 		});
 	}
 };

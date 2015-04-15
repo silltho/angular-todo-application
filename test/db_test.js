@@ -26,11 +26,52 @@ describe('DAO Tests', function() {
 				foundUsers[0].should.eql(testUser);
 				done(err);
 			});
-
 		});
 	});
 
-	it('should create new todo', function(done) {
+	it('should update user', function(done){
+		var testUserDAO = createTestUserDAO();
+		var testUser = createTestUser();
+
+		testUserDAO.createUser(testUser, function() {
+			testUserDAO.readUsers(testUser, function(err, foundUsers) {
+				testUser = foundUsers[0];
+				testUser.description = 'TestUser-updated';
+				console.log(testUser);
+				testUserDAO.updateUser(testUser, function(err, numReplaced) {
+					testUserDAO.readUsers(testUser,function(err, updatedUsers) {
+						updatedUsers.should.not.be.false;
+						updatedUsers.should.have.lengthOf(1);
+						updatedUsers[0].should.eql(testUser);
+						done();
+					});
+				});	
+			});
+		});	
+	});
+
+	it('should delete user', function(done){
+		var testUserDAO = createTestUserDAO();
+		var testUser = createTestUser();
+
+		testUserDAO.createUser(testUser, function() {
+			testUserDAO.readUsers(testUser, function(err, foundUsers) {
+				testUser = foundUsers[0];
+				testUser.description = 'TestUser-updated';
+				console.log(testUser);
+				testUserDAO.updateUser(testUser, function(err, numReplaced) {
+					testUserDAO.readUsers(testUser,function(err, updatedUsers) {
+						updatedUsers.should.not.be.false;
+						updatedUsers.should.have.lengthOf(1);
+						updatedUsers[0].should.eql(testUser);
+						done();
+					});
+				});	
+			});
+		});	
+	});
+
+	/*it('should create new todo', function(done) {
 		var testTodoDAO = createTestTodoDAO();
 		var testTodo = createTestTodo();
 
@@ -91,7 +132,7 @@ describe('DAO Tests', function() {
 				});
 			});	
 		});	
-	});
+	});*/
 
 });
 
