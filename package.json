@@ -16,7 +16,8 @@
   "license": "no",
   "dependencies": {
     "express": "^4.12.3",
-    "nedb": "^1.1.2"
+    "nedb": "^1.1.2",
+    "passport": "^0.2.1"
   },
   "devDependencies": {
     "mocha": "^2.2.4",
