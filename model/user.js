@@ -1,82 +1,48 @@
 var Todo = require('./todo');
 
-module.exports = function User(username, password, firstName, lastName, email){
-	var username = username;
-	var password = password;
-	var firstName = firstName;
-	var lastName = lastName;
-	var email = email
+function User(username, password, firstName, lastName, email){
+	this.username = username;
+	this.password = password;
+	this.firstName = firstName;
+	this.lastName = lastName;
+	this.email = email
 
-	var todos = [];
+	this.todos = [];
+}
 
-	Object.defineProperty(this, 'username', {
-		get : function () {
-			return username;
-		}
-	});
+User.prototype.createTodo = function(description) {
+	var newTodo = new Todo(description);
+	this.todos.push(newTodo);
+	return this.todos;
+}
 
-	Object.defineProperty(this, 'password', {
-		get : function () {
-			return password;
-		},
-		set : function (value) {
-			password = value;
-		}
-	});
+User.prototype.getTodoById = function(id) {
+	var todoIndex = getArrayIndexById(id, this.todos);
+	return this.todos[todoIndex];
+}
 
-	Object.defineProperty(this, 'fullName', {
-		get : function () {
-			return firstName + ' ' + lastName;
-		}
-	});
+User.prototype.updateTodo = function(todo) {
+	var todoIndex = getArrayIndexById(todo._id, this.todos);
+	return this.todos[todoIndex] = todo;
+}
 
-	Object.defineProperty(this, 'email', {
-		get : function () {
-			return email;
-		},
-		set : function (value) {
-			email = value;
-		}
-	});
+User.prototype.deleteTodo = function(id) {
+	var todoIndex = getArrayIndexById(id, this.todos);
+	this.todos.splice(todoIndex, 1);
+	return this.todos;
+}
 
-	Object.defineProperty(this, 'todos', {
-		get : function () {
-			return todos;
-		}
-	});
-
-	this.createTodo = function(description) {
-		var newTodo = new Todo(description);
-		todos.push(newTodo);
-		return todos;
+function getArrayIndexById(id, array) {
+	var lookup = {};
+	for (var i = 0, len = array.length; i < len; i++) {
+		lookup[array[i]._id] = i;
 	}
-
-	this.getTodoById = function(id) {
-		var todoIndex = getArrayIndexOfTodoById(id);
-		return todos[todoIndex];
+	if(typeof lookup[id] != 'undefined') {
+		console.log('found todo with id = ' + id + ' in models/user.js');
+		return lookup[id];
 	}
+	console.log('no todo found with id = ' + id + ' in models/user.js');
+	throw 'no todo found with id = ' + id + ' in models/user.js';
+}
 
-	this.updateTodo = function(todo) {
-		var todoIndex = getArrayIndexOfTodoById(todo._id);
-		return todos[todoIndex] = todo;
-	}
-
-	this.deleteTodo = function(id) {
-		var todoIndex = getArrayIndexOfTodoById(id);
-		todos.splice(todoIndex, 1);
-		return todos;
-	}
-
-	function getArrayIndexOfTodoById(id) {
-		var lookup = {};
-		for (var i = 0, len = todos.length; i < len; i++) {
-			lookup[todos[i]._id] = i;
-		}
-		if(typeof lookup[id] != 'undefined') {
-			console.log('found todo with id = ' + id + ' in models/user.js');
-			return lookup[id];	
-		}
-		console.log('no todo found with id = ' + id + ' in models/user.js');
-		throw 'no todo found with id = ' + id + ' in models/user.js';
-	}
-};
+module.exports = User;

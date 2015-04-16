@@ -5,7 +5,12 @@ describe('Model Tests', function() {
 
 	it('should create User', function(done) {
 		var testUser = createTestUser();
+
 		testUser.username.should.exist;
+		testUser.password.should.exist;
+		testUser.email.should.exist;
+		testUser.firstName.should.exist;
+		testUser.lastName.should.exist;
 		done();
 	});
 

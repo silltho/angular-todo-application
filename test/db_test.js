@@ -1,12 +1,12 @@
 var should = require('should');
 var Database = require('../db/Database');
+var User = require('../model/user');
 
 describe('DAO Tests', function() {
 
 	it('should create new user', function(done) {
 		var testUserDAO = createTestUserDAO();
 		var testUser = createTestUser();
-
 		testUserDAO.createUser(testUser, function() {
 			testUserDAO.getDB().count({}, function(err, count) {
 				count.should.eql(1);
@@ -20,7 +20,7 @@ describe('DAO Tests', function() {
 		var testUser = createTestUser();
 
 		testUserDAO.createUser(testUser, function(){
-			testUserDAO.readUsers(testUser, function(err, foundUsers) {
+			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				foundUsers.should.not.be.false;
 				foundUsers.should.have.lengthOf(1);
 				foundUsers[0].should.eql(testUser);
@@ -34,12 +34,11 @@ describe('DAO Tests', function() {
 		var testUser = createTestUser();
 
 		testUserDAO.createUser(testUser, function() {
-			testUserDAO.readUsers(testUser, function(err, foundUsers) {
+			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				testUser = foundUsers[0];
 				testUser.description = 'TestUser-updated';
-				console.log(testUser);
 				testUserDAO.updateUser(testUser, function(err, numReplaced) {
-					testUserDAO.readUsers(testUser,function(err, updatedUsers) {
+					testUserDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
 						updatedUsers.should.not.be.false;
 						updatedUsers.should.have.lengthOf(1);
 						updatedUsers[0].should.eql(testUser);
@@ -55,12 +54,11 @@ describe('DAO Tests', function() {
 		var testUser = createTestUser();
 
 		testUserDAO.createUser(testUser, function() {
-			testUserDAO.readUsers(testUser, function(err, foundUsers) {
+			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				testUser = foundUsers[0];
 				testUser.description = 'TestUser-updated';
-				console.log(testUser);
 				testUserDAO.updateUser(testUser, function(err, numReplaced) {
-					testUserDAO.readUsers(testUser,function(err, updatedUsers) {
+					testUserDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
 						updatedUsers.should.not.be.false;
 						updatedUsers.should.have.lengthOf(1);
 						updatedUsers[0].should.eql(testUser);
@@ -148,8 +146,10 @@ function createTestTodoDAO() {
 	return createTestDatabase().getTodoDAO();
 }
 
-function createTestUser() {
-	return {username: 'TestUser'};
+function createTestUser(){
+	var testUser = new User('username', 'password', 'firstName', 'lastName', 'email');
+	testUser.createTodo('description');
+	return testUser;
 }
 
 function createTestTodo() {

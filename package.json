@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node app.js",
     "test": "mocha -w",
-    "test-debug": "mocha -w --debug"
+    "test-debug": "mocha --debug"
   },
   "repository": {
     "type": "git",
