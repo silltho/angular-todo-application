@@ -1,7 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var Database = require('../db/database');
-//var userService = require('../service/userService')
+var userService = require('./userService')
 
 var app = express();
 var router = express.Router();
@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 	next();
 });
 
-//router.post('/signup', passport.authenticate('signup'), userService.signup);
+router.post('/signup', passport.authenticate('signup'), userService.signup);
 
 
 /*router.get('/services/todos', function(req, res, next) {

@@ -1,31 +1,40 @@
-var express = require('express');
+var UserDAO = require('../db/userDAO');
 var passport = require('passport');
-var Database = require('../db/database');
-//var userService = require('../service/userService')
 
-var app = express();
-var router = express.Router();
+module.exports = {
 
-router.get('/', function(req, res, next) {
-	console.log('render index.ejs');
-	res.sendStatus(200);
-	next();
-});
+	userDAO: new UserDAO('test'),
 
-//router.post('/signup', passport.authenticate('signup'), userService.signup);
+	signup: function(req, res) {
+		console.log('register ' + req.user.username);
+		res.sendStatus(200);
+	},
 
+	login: function(req, res) {
+		console.log('welcome ' + req.user.username);
+		res.sendStatus(200);
+	},
 
-/*router.get('/services/todos', function(req, res, next) {
-	console.log('get all Todos');
-	db.find({}, function(err, todos) {
-		if (err) return next(err);
-		console.log('found ' + todos.length + ' Todos');
-		res.json(todos);
-		next();
-	});
-});
+	loginCheck: function(req, res) {
+		if(auth(req) == true) {
+			res.sendStatus(200);
+		} else {
+			res.sendStatus(401);
+		}
+	}
+};
 
-router.post('/services/todos', auth, function(req, res, next) {
+function auth(req){ 
+	if (!req.isAuthenticated()) {
+		console.log(req.user.username + ' not authenticate send 401'); 
+		return false;
+	} else { 
+		console.log(req.user.username + ' successfully authenticate'); 
+		return true
+	}
+};
+
+/*router.post('/services/todos', auth, function(req, res, next) {
 	var todo = req.body;
 	todo.done = false;
 	console.log('create todo with description=' + todo.description);
@@ -76,7 +85,7 @@ router.post('/signup',
     	console.log('register ' + req.user.username);
     	res.sendStatus(200);
 	}
-);*/
+);
 
 var auth = function(req, res, next){ 
 	if (!req.isAuthenticated()) {
@@ -86,8 +95,4 @@ var auth = function(req, res, next){
 		console.log('authenticate'); 
 		next();
 	}
-};
-
-app.use(router);
-
-module.exports = app;
+};*/

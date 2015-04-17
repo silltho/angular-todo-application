@@ -11,9 +11,10 @@ describe('Routes Tests', function() {
 			.expect(200, done);
 	});
 
-	it('should get all Todos of User', function() {
+	/*it('should signup user', function() {
+		debugger;
 		request(router)
-			.get('/services/todos')
-			.expect(200);
-	});
+			.post('/signup')
+			.expect(400);
+	});*/
 });

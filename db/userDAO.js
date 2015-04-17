@@ -36,7 +36,6 @@ module.exports = function UserDAO(db_env) {
 	}
 
 	this.readUsers = function(searchParams, done) {
-		debugger;
 		db.find(searchParams, function(err, users) {
 			if (err) {
 				return done(err);
@@ -69,5 +68,4 @@ module.exports = function UserDAO(db_env) {
 			done(null);
 		});
 	}
-
 };
