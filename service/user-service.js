@@ -1,17 +1,20 @@
-var UserDAO = require('../db/userDAO');
+var UserDAO = require('../dao/user-dao');
 var passport = require('passport');
+var User = require('../model/user');
+
+var testuserdao = new UserDAO('test');
 
 module.exports = {
 
 	userDAO: new UserDAO('test'),
 
 	signup: function(req, res) {
-		console.log('register ' + req.user.username);
+		console.log('signup: ' + req.user.username + ' in service/user-service.js');
 		res.sendStatus(200);
 	},
 
 	login: function(req, res) {
-		console.log('welcome ' + req.user.username);
+		console.log('login successfull, welcome ' + req.user.username + ' in service/user-service.js');
 		res.sendStatus(200);
 	},
 
@@ -21,15 +24,53 @@ module.exports = {
 		} else {
 			res.sendStatus(401);
 		}
+	},
+
+	getAllTodos: function(req, res) {
+		res.json(req.user.todos);
+	},
+
+	createTodo: function(req, res) {
+		if(checkRequestForUser(req)) {
+			var newTodo = req.user.createTodo(req.body.description);
+			this.userDAO.updateUser(req.user);
+			res.json(newTodo);
+		}
+	},
+
+	updateTodo: function(req, res) {
+		if(checkRequestForUser(req)) {
+			var updatedTodo = req.user.updateTodo(req.body);
+			this.userDAO.updateUser(req.user);
+			res.json(updatedTodo);
+		}
+	},
+
+	deleteTodo: function(req, res) {
+		if(checkRequestForUser(req)) {
+			req.user.deleteTodo(req.params.id);
+			this.userDAO.updateUser(req.user);
+			console.log('delete successfull return http-status 204 in service/user-service.js');
+			res.sendStatus(204);
+		}
 	}
 };
 
+function checkRequestForUser(req){
+	if(req.user instanceof User) {
+		return true;
+	} else {
+		console.error('req.user needs to be a instance of User in service/user-service.js');
+		throw 'req.user needs to be a instance of User in service/user-service.js';
+	}
+}
+
 function auth(req){ 
 	if (!req.isAuthenticated()) {
-		console.log(req.user.username + ' not authenticate send 401'); 
+		console.error(req.user.username + ' is not authenticate in service/user-service.js'); 
 		return false;
 	} else { 
-		console.log(req.user.username + ' successfully authenticate'); 
+		console.log(req.user.username + ' successfully authenticate in service/user-service.js'); 
 		return true
 	}
 };
@@ -67,25 +108,6 @@ router.delete('/services/todos/:id' ,auth ,function(req, res, next) {
 	});
 });
 
-router.post('/login',
-	passport.authenticate('login'),
-	function(req, res) {
-		console.log('welcome ' + req.user.username);
-		res.sendStatus(200);
-	}
-);
-
-router.get('/loggedin', function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-});
-
-router.post('/signup',
-	passport.authenticate('signup'),
-  	function(req, res) {
-    	console.log('register ' + req.user.username);
-    	res.sendStatus(200);
-	}
-);
 
 var auth = function(req, res, next){ 
 	if (!req.isAuthenticated()) {

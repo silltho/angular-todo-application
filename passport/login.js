@@ -1,11 +1,10 @@
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
-var db = require('../db/init')
 
 module.exports = function(passport){
 	console.log('create login strategy in passport/login.js');
 	passport.use('login', new LocalStrategy({passReqToCallback : true}, function(req, username, password, done) {
-		console.log('Check Login credentials in passport/login.js');
+		/*console.log('Check Login credentials in passport/login.js');
 		// check in mongo if a user with username exists or not
 		db.users.find({ 'username' : username }, function(err, user) {
 			// In case of any error, return using the done method
@@ -25,7 +24,7 @@ module.exports = function(passport){
 			// which will be treated like success
 			return done(null, user[0]);
 		});
-		db.users.loadDatabase();
+		db.users.loadDatabase();*/
 	}));
 
 	var isValidPassword = function(storedPassword, password){

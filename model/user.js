@@ -1,6 +1,7 @@
 var Todo = require('./todo');
 
 function User(username, password, firstName, lastName, email){
+	this._id = 'notsaved';
 	this.username = username;
 	this.password = password;
 	this.firstName = firstName;
@@ -13,7 +14,7 @@ function User(username, password, firstName, lastName, email){
 User.prototype.createTodo = function(description) {
 	var newTodo = new Todo(description);
 	this.todos.push(newTodo);
-	return this.todos;
+	return newTodo;
 }
 
 User.prototype.getTodoById = function(id) {
@@ -41,7 +42,7 @@ function getArrayIndexById(id, array) {
 		console.log('found todo with id = ' + id + ' in models/user.js');
 		return lookup[id];
 	}
-	console.log('no todo found with id = ' + id + ' in models/user.js');
+	console.error('no todo found with id = ' + id + ' in models/user.js');
 	throw 'no todo found with id = ' + id + ' in models/user.js';
 }
 

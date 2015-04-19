@@ -1,9 +1,7 @@
 var express = require('express');
 var passport = require('passport');
-var Database = require('../db/database');
-//var userService = require('../service/userService')
+var userService = require('../service/user-service');
 
-var app = express();
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -12,7 +10,7 @@ router.get('/', function(req, res, next) {
 	next();
 });
 
-//router.post('/signup', passport.authenticate('signup'), userService.signup);
+router.post('/signup', passport.authenticate('signup'), userService.signup);
 
 
 /*router.get('/services/todos', function(req, res, next) {
@@ -88,6 +86,4 @@ var auth = function(req, res, next){
 	}
 };
 
-app.use(router);
-
-module.exports = app;
+module.exports = router;
