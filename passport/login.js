@@ -1,9 +1,6 @@
-var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
 
-module.exports = function(passport){
-	console.log('create login strategy in passport/login.js');
-	passport.use('login', new LocalStrategy({passReqToCallback : true}, function(req, username, password, done) {
+module.exports = function(req, username, password, done) {
 		/*console.log('Check Login credentials in passport/login.js');
 		// check in mongo if a user with username exists or not
 		db.users.find({ 'username' : username }, function(err, user) {
@@ -25,9 +22,8 @@ module.exports = function(passport){
 			return done(null, user[0]);
 		});
 		db.users.loadDatabase();*/
-	}));
 
-	var isValidPassword = function(storedPassword, password){
+	function isValidPassword(storedPassword, password){
 		console.log('compare Password in passport/login.js#isValidPassword');
 		console.log('storedPassword='+storedPassword);
 		return bCrypt.compareSync(password, storedPassword);

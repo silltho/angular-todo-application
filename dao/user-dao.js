@@ -9,10 +9,6 @@ module.exports = function UserDAO(db_env) {
 		db = new Datastore({ filename: '../db/db.db', autoload: true });
 	}
 
-	this.getDB = function() {
-		return db;
-	}
-
 	this.createUser = function(user, done){
 		db.find(user, function(err, users) {
 			if (err) {

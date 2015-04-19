@@ -1,7 +1,11 @@
 var should = require('should');
 var sinon = require('sinon');
-var userService = require('../service/user-service');
+var UserService = require('../service/user-service');
+var UserDAO = require('../dao/user-dao');
 var User = require('../model/user');
+
+var userDAO = new UserDAO('test');
+var userService = new UserService(userDAO);
 
 describe('Service Tests', function() {
 	describe('User Tests', function() {

@@ -1,7 +1,7 @@
 var express = require('express');
 var passport = require('passport');
-var userService = require('../service/user-service');
 
+module.exports = function Router(app, userService) {
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -75,6 +75,8 @@ router.post('/signup',
     	res.sendStatus(200);
 	}
 );*/
+	app.use(router);
+}
 
 var auth = function(req, res, next){ 
 	if (!req.isAuthenticated()) {
@@ -85,5 +87,3 @@ var auth = function(req, res, next){
 		next();
 	}
 };
-
-module.exports = router;

@@ -1,3 +1,4 @@
+var LocalStrategy = require('passport-local').Strategy;
 var login = require('./login');
 var signup = require('./signup');
 
@@ -13,6 +14,6 @@ module.exports = function initPassport(passport) {
 	  done(null, user);
 	});
 
-	login(passport);
-	signup(passport);
+	passport.use('signup', new LocalStrategy({passReqToCallback : true}, signup);
+	passport.use('login', new LocalStrategy({passReqToCallback : true}, login);
 }

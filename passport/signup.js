@@ -1,10 +1,9 @@
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
 
-module.exports = function(passport){
-  console.log("create signup strategy in passport/signup.js");
-  passport.use('signup', new LocalStrategy({passReqToCallback : true}, function(req, username, password, done) {
-    console.log('test');
+module.exports = function(req, username, password, done) {
+    console.log('check signup credentials in passport/signup.js');
+    done();
     /*findOrCreateUser = function(){
       console.log('Check Signup credentials in passport/signup.js');
       // find a user in Mongo with provided username
@@ -40,11 +39,10 @@ module.exports = function(passport){
     // Delay the execution of findOrCreateUser and execute
     // the method in the next tick of the event loop
     process.nextTick(findOrCreateUser);*/
-  }));
-
   // Generates hash using bCrypt
-  var createHash = function(password){
+  function createHash(password){
     console.log('create Hash for User Password in passport/signup.js#createHash');
     return bCrypt.hashSync(password, bCrypt.genSaltSync(10));
   }
+
 }
