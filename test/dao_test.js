@@ -1,23 +1,28 @@
+var Datastore = require('nedb');
 var should = require('should');
-var UserDAO = require('../dao/user-dao');
-var User = require('../model/user');
+
+var Test = require('./test');
+var test = {};
+
+beforeEach(function() {
+	test = new Test();
+});
 
 describe('DAO Tests', function() {
 
 	it('should create new user', function(done) {
-		var testUserDAO = createTestUserDAO();
-		var testUser = createTestUser();
-		testUserDAO.createUser(testUser, function() {
+		var testUser = test.createTestUser();
+
+		test.userDAO.createUser(testUser, function() {
 			done();
 		});
 	});
 
 	it('should find user', function(done){
-		var testUserDAO = createTestUserDAO();
-		var testUser = createTestUser();
+		var testUser = test.createTestUser();
 
-		testUserDAO.createUser(testUser, function(){
-			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
+		test.userDAO.createUser(testUser, function(){
+			test.userDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				foundUsers.should.not.be.false;
 				foundUsers.should.have.lengthOf(1);
 				foundUsers[0].should.eql(testUser);
@@ -27,15 +32,14 @@ describe('DAO Tests', function() {
 	});
 
 	it('should update user', function(done){
-		var testUserDAO = createTestUserDAO();
-		var testUser = createTestUser();
+		var testUser = test.createTestUser();
 
-		testUserDAO.createUser(testUser, function() {
-			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
+		test.userDAO.createUser(testUser, function() {
+			test.userDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				testUser = foundUsers[0];
 				testUser.description = 'TestUser-updated';
-				testUserDAO.updateUser(testUser, function(err, numReplaced) {
-					testUserDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
+				test.userDAO.updateUser(testUser, function(err, numReplaced) {
+					test.userDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
 						updatedUsers.should.not.be.false;
 						updatedUsers.should.have.lengthOf(1);
 						updatedUsers[0].should.eql(testUser);
@@ -47,15 +51,14 @@ describe('DAO Tests', function() {
 	});
 
 	it('should delete user', function(done){
-		var testUserDAO = createTestUserDAO();
-		var testUser = createTestUser();
+		var testUser = test.createTestUser();
 
-		testUserDAO.createUser(testUser, function() {
-			testUserDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
+		test.userDAO.createUser(testUser, function() {
+			test.userDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				testUser = foundUsers[0];
 				testUser.description = 'TestUser-updated';
-				testUserDAO.updateUser(testUser, function(err, numReplaced) {
-					testUserDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
+				test.userDAO.updateUser(testUser, function(err, numReplaced) {
+					test.userDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
 						updatedUsers.should.not.be.false;
 						updatedUsers.should.have.lengthOf(1);
 						updatedUsers[0].should.eql(testUser);
@@ -66,17 +69,3 @@ describe('DAO Tests', function() {
 		});	
 	});
 });
-
-function createTestUserDAO() {
-	return new UserDAO('test');
-}
-
-function createTestUser(){
-	var testUser = new User('username', 'password', 'firstName', 'lastName', 'email');
-	testUser.createTodo('description');
-	return testUser;
-}
-
-function createTestTodo() {
-	return {description: 'TestTodo'};
-}

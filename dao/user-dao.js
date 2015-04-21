@@ -1,31 +1,23 @@
-var Datastore = require('nedb');
-
-module.exports = function UserDAO(db_env) {
-	var db;
-
-	if(db_env == "test") {
-		db = new Datastore({ autoload: true });
-	} else {
-		db = new Datastore({ filename: '../db/db.db', autoload: true });
-	}
+module.exports = function UserDAO(db) {
+	var db = db;
 
 	this.createUser = function(user, done){
 		db.find(user, function(err, users) {
 			if (err) {
-				console.error('error in finding user: ' + err + ' in db/userDAO.js');
+				console.error('error in finding user: ['+err.message+'] in db/userDAO.js');
 				return done(err);
 			}
 			if (users.length != 0) {
-				console.error('user: ' + user + ' already exists in db/userDAO.js');
-				return done(null, null);
+				var err = new Error('user with username = ['+user.username+'] already exists in db/userDAO.js');
+				return done(err);
 			} else {
-				db.insert(user, function(err, newUser) {
+				db.insert(user, function(err, createdUser) {
 					if (err){
-						console.error('error in saving user: ' + err + ' in db/userDAO.js'); 
+						console.error('error in createUser: ['+err.message+'] in db/userDAO.js'); 
 						return done(err); 
 					}
-					console.log('create user: ' + newUser.username + ' succesful in db/userDAO.js');  
-					return done(null, newUser);
+					console.log('create user: ['+createdUser.username+'] succesful in db/userDAO.js');  
+					return done(null, createdUser);
 				});
 			}
 		});
@@ -34,10 +26,11 @@ module.exports = function UserDAO(db_env) {
 	this.readUsers = function(searchParams, done) {
 		db.find(searchParams, function(err, users) {
 			if (err) {
+				console.error('error in readUsers: ['+err.message+'] in db/userDAO.js'); 
 				return done(err);
 			}
 			if (users.length == 0) {
-				console.error('no user found with: ' + JSON.stringify(searchParams, null, 4) + ' in db/userDAO.js');
+				console.log('no user found with: '+JSON.stringify(searchParams, null, 4)+' in db/userDAO.js');
 				return done(null, false);
 			}
 			console.log(users.length + ' users found in db/userDAO.js');
@@ -50,7 +43,7 @@ module.exports = function UserDAO(db_env) {
 			if (err) {
 				return done(err);
 			}
-			console.log('updated user with id = ' + user._id + ' in db/userDAO.js');
+			console.log('updated user with id = ['+user._id+'] in db/userDAO.js');
 			return done(null, numReplaced);
 		});
 	}

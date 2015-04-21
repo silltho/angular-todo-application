@@ -1,11 +1,14 @@
+var Datastore = require('nedb');
 var should = require('should');
 var sinon = require('sinon');
-var UserService = require('../service/user-service');
-var UserDAO = require('../dao/user-dao');
 var User = require('../model/user');
 
-var userDAO = new UserDAO('test');
-var userService = new UserService(userDAO);
+var Test = require('./test');
+var test = {};
+
+beforeEach(function() {
+	test = new Test();
+});
 
 describe('Service Tests', function() {
 	describe('User Tests', function() {
@@ -13,9 +16,10 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.sendStatus = sinon.spy();
-			req.user = createTestUser();
+			req.user = test.createTestUser();
 
-			userService.signup(req, res);
+			test.userService.signup(req, res);
+
 			spy.calledOnce.should.be.true;
 			spy.calledWith(200).should.be.true;
 		});
@@ -24,9 +28,10 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.sendStatus = sinon.spy();
-			req.user = createTestUser();
+			req.user = test.createTestUser();
 
-			userService.login(req, res);
+			test.userService.login(req, res);
+
 			spy.calledOnce.should.be.true;
 			spy.calledWith(200).should.be.true;
 		});
@@ -35,12 +40,13 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.sendStatus = sinon.spy();
-			req.user = createTestUser();
+			req.user = test.createTestUser();
 			req.isAuthenticated = function() {
 				return true;
 			};
 
-			userService.loginCheck(req, res);
+			test.userService.loginCheck(req, res);
+
 			spy.calledOnce.should.be.true;
 			spy.calledWith(200).should.be.true;
 		});
@@ -51,9 +57,9 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.json = sinon.spy();
-			req.user = createTestUser();
+			req.user = test.createTestUser();
 
-			userService.getAllTodos(req, res);
+			test.userService.getAllTodos(req, res);
 
 			spy.calledOnce.should.be.true;
 			spy.calledWith(req.user.todos).should.be.true;
@@ -63,10 +69,10 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.json = sinon.spy();
-			req.user = createTestUser();
+			req.user = test.createTestUser();
 			req.body = {description: 'testDescription'};
 
-			userService.createTodo(req, res);
+			test.userService.createTodo(req, res);
 
 			spy.calledOnce.should.be.true;
 			spy.calledWith(req.user.todos[req.user.todos.length-1]).should.be.true;
@@ -76,7 +82,7 @@ describe('Service Tests', function() {
 		it("should update todo", function() {
 			var req = {};
 			var res = {};
-			var testUser = createTestUser();
+			var testUser = test.createTestUser();
 			var oldTodo = JSON.parse(JSON.stringify(testUser.todos[0]));
 			var newTodo = JSON.parse(JSON.stringify(testUser.todos[0]));
 			var spy = res.json = sinon.spy();
@@ -84,7 +90,7 @@ describe('Service Tests', function() {
 			req.body = newTodo;
 			req.user = testUser;
  
-			userService.updateTodo(req, res);
+			test.userService.updateTodo(req, res);
 
 			spy.calledOnce.should.be.true;
 			spy.calledWith(newTodo).should.be.true;
@@ -95,12 +101,12 @@ describe('Service Tests', function() {
 		it("should delete todo", function() {
 			var req = {};
 			var res = {};
-			var testUser = createTestUser();
+			var testUser = test.createTestUser();
 			var spy = res.sendStatus = sinon.spy();
 			req.params = {id: testUser.todos[0]._id};
 			req.user = testUser;
  
-			userService.deleteTodo(req, res);
+			test.userService.deleteTodo(req, res);
 
 			spy.calledOnce.should.be.true;
 			spy.calledWith(204).should.be.true;
@@ -108,9 +114,3 @@ describe('Service Tests', function() {
 		});
 	});
 });
-
-function createTestUser(){
-	var testUser = new User('testUsername', 'password', 'firstName', 'lastName', 'email');
-	testUser.createTodo('description');
-	return testUser;
-}

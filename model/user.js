@@ -1,7 +1,6 @@
 var Todo = require('./todo');
 
 function User(username, password, firstName, lastName, email){
-	this._id = 'notsaved';
 	this.username = username;
 	this.password = password;
 	this.firstName = firstName;
