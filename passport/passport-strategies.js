@@ -25,7 +25,6 @@ module.exports = function PassportStrategies(userDAO) {
 
 	this.login = function(req, done) {
 		console.log('check login credentials in passport/passport-strategies.js#login');
-		debugger;
 		userDAO.readUsers({username: req.username}, function(err, foundUsers) {
 			if(err) {
 				console.error('error: ['+err.message+'] in passport/passport-strategies.js#login');

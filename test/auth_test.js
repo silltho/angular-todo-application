@@ -5,11 +5,11 @@ var sinon = require('sinon');
 var Test = require('./test');
 var test = {};
 
-beforeEach(function() {
-	test = new Test();
-});
-
 describe('Authentication Tests', function() {
+	beforeEach(function() {
+		test = new Test();
+	});
+	
 	it('should signup user', function(done) {
 		var req = {
 			username: 'test-username',

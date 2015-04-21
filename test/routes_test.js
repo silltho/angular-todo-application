@@ -5,11 +5,11 @@ var express = require('express');
 var Test = require('./test');
 var test = {};
 
-beforeEach(function() {
-	test = new Test();
-});
-
 describe('Routes Tests', function(done) {
+	beforeEach(function() {
+		test = new Test();
+	});
+
 	it('should send request to /', function(done) {
 		request(test.app)
 			.get('/')
@@ -19,6 +19,7 @@ describe('Routes Tests', function(done) {
 	it('should send request to /signup', function(done) {
 		request(test.app)
 			.post('/signup')
+			.send()
 			.expect(200, done);
 	});
 

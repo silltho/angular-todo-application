@@ -4,11 +4,10 @@ var should = require('should');
 var Test = require('./test');
 var test = {};
 
-beforeEach(function() {
-	test = new Test();
-});
-
 describe('DAO Tests', function() {
+	beforeEach(function() {
+		test = new Test();
+	});
 
 	it('should create new user', function(done) {
 		var testUser = test.createTestUser();

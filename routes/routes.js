@@ -1,7 +1,7 @@
 var express = require('express');
-//var passport = require('passport');
 
 module.exports = function Router(app, passport, userService) {
+	 debugger;
 	var router = express.Router();
 
 	router.get('/', function(req, res, next) {

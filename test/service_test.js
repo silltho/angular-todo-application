@@ -6,11 +6,11 @@ var User = require('../model/user');
 var Test = require('./test');
 var test = {};
 
-beforeEach(function() {
-	test = new Test();
-});
-
 describe('Service Tests', function() {
+	beforeEach(function() {
+		test = new Test();
+	});
+	
 	describe('User Tests', function() {
 		it("should signup user", function() {
 			var req = {};
