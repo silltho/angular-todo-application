@@ -1,80 +1,27 @@
 var express = require('express');
-var passport = require('passport');
+//var passport = require('passport');
 
-module.exports = function Router(app, userService) {
-var router = express.Router();
+module.exports = function Router(app, passport, userService) {
+	var router = express.Router();
 
-router.get('/', function(req, res, next) {
-	console.log('render index.ejs');
-	res.sendStatus(200);
-	next();
-});
-
-router.post('/signup', passport.authenticate('signup'), userService.signup);
-
-
-/*router.get('/services/todos', function(req, res, next) {
-	console.log('get all Todos');
-	db.find({}, function(err, todos) {
-		if (err) return next(err);
-		console.log('found ' + todos.length + ' Todos');
-		res.json(todos);
+	router.get('/', function(req, res, next) {
+		console.log('render index.ejs');
+		res.sendStatus(200);
 		next();
 	});
-});
 
-router.post('/services/todos', auth, function(req, res, next) {
-	var todo = req.body;
-	todo.done = false;
-	console.log('create todo with description=' + todo.description);
-	db.insert(todo, function(err, todo) {
-		if (err) return next(err);
-		console.log('create successfull return todo');
-		res.json(todo);
-	});
-});
+	router.post('/signup', passport.authenticate('signup'), userService.signup);
 
-router.put('/services/todos/:todo', auth, function(req, res, next) {
-	var todo = req.body;
-	console.log('update todo with id=' + todo._id);
+	router.post('/login', passport.authenticate('login'), userService.login);
 
-	db.update({ _id:todo._id }, { $set: {description: todo.description, done: todo.done}}, function (err, todo) {
-		if (err) return next(err);
-	});
-	console.log('update successfull return todo');
-	res.json(todo);
-});
+	router.get('/loggedin', userService.loginCheck);
 
-router.delete('/services/todos/:id' ,auth ,function(req, res, next) {
-	var id = req.params.id;
-	console.log('delete todo with id=' + id);
+	router.post('/services/todos', auth, userService.createTodo);
 
-	db.remove({ _id:id }, {}, function(err) {
-		if (err) return next(err);
-		console.log('delete successfull return status 204');
-		res.sendStatus(204);
-	});
-});
+	router.put('/services/todos/:id', auth, userService.updateTodo);
 
-router.post('/login',
-	passport.authenticate('login'),
-	function(req, res) {
-		console.log('welcome ' + req.user.username);
-		res.sendStatus(200);
-	}
-);
+	router.delete('/services/todos/:id', auth, userService.deleteTodo);
 
-router.get('/loggedin', function(req, res) {
-  res.send(req.isAuthenticated() ? req.user : '0');
-});
-
-router.post('/signup',
-	passport.authenticate('signup'),
-  	function(req, res) {
-    	console.log('register ' + req.user.username);
-    	res.sendStatus(200);
-	}
-);*/
 	app.use(router);
 }
 

@@ -1,8 +1,6 @@
 var LocalStrategy = require('passport-local').Strategy;
-var login = require('./login');
-var signup = require('./signup');
 
-module.exports = function initPassport(passport) {
+module.exports = function initPassport(passport, passportStrategies) {
 
 	console.log("Initialize Passport in passport/init.js");
 
@@ -14,6 +12,6 @@ module.exports = function initPassport(passport) {
 	  done(null, user);
 	});
 
-	passport.use('signup', new LocalStrategy({passReqToCallback : true}, signup);
-	passport.use('login', new LocalStrategy({passReqToCallback : true}, login);
+	passport.use('signup', new LocalStrategy({passReqToCallback : true}, passportStrategies.signup));
+	passport.use('login', new LocalStrategy({passReqToCallback : true}, passportStrategies.login));
 }
