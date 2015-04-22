@@ -4,35 +4,38 @@ var User = require('../model/user.js');
 module.exports = function PassportStrategies(userDAO) {
 	var userDAO = userDAO;
 	
-	this.signup = function(req, done) {
-		console.log('check signup credentials in passport/passport-strategies.js');
-		var newUser = new User(
-			req.username, 
-			createHash(req.password), 
-			req.firstname, req.lastname, 
-			req.email
-		);
+	this.signup = function(req, username, password, done) {
+		process.nextTick(function() {
+			console.log('check signup credentials in passport/passport-strategies.js');
+			var newUser = new User(
+				req.body.username, 
+				createHash(req.body.password), 
+				req.body.firstName, 
+				req.body.lastName, 
+				req.body.email
+			);
 
-		userDAO.createUser(newUser, function(err, createdUser) {
-			if (err) {
-				console.error('error: ['+err.message+'] in passport/passport-strategies.js#signup');
-				done(err);
-			}
-			console.log('successful signup user with username = ['+createdUser.username+'] in passport/signup.js#signup');
-			done(null, createdUser);
+			userDAO.createUser(newUser, function(err, createdUser) {
+				if (err) {
+					console.error('error: ['+err.message+'] in passport/passport-strategies.js#signup');
+					return done(err);
+				}
+				console.log('successful signup user with username = ['+createdUser.username+'] in passport/signup.js#signup');
+				return done(null, createdUser);
+			});
 		});
 	}
 
-	this.login = function(req, done) {
+	this.login = function(req, username, password, done) {
 		console.log('check login credentials in passport/passport-strategies.js#login');
 		userDAO.readUsers({username: req.username}, function(err, foundUsers) {
 			if(err) {
 				console.error('error: ['+err.message+'] in passport/passport-strategies.js#login');
-				done(err);
+				return done(err);
 			} 
 			if(foundUsers === false) {
 				var err = new Error('no user found with username = ['+req.username+'] in passport/passport-strategies.js#login');
-				done(err);
+				return done(err);
 			} else {
 				for (var i = 0; i < foundUsers.length; i++) {
 					if(isValidPassword(foundUsers[i].password, req.password)) {

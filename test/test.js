@@ -15,7 +15,7 @@ module.exports = function Test() {
 	this.app = express();
 	this.db = new Datastore({ autoload: true });
 	this.userDAO = new UserDAO(this.db);
-	this.userService = new UserService(this.userDAO);
+	this.userService = new UserService(this.userDAO, passport);
 	this.passportStrategies = new PassportStrategies(this.userDAO);
 	this.router = new Router(this.app, passport, this.userService);
 

@@ -1,7 +1,7 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 
 module.exports = function Router(app, passport, userService) {
-	 debugger;
 	var router = express.Router();
 
 	router.get('/', function(req, res, next) {
@@ -10,9 +10,9 @@ module.exports = function Router(app, passport, userService) {
 		next();
 	});
 
-	router.post('/signup', passport.authenticate('signup'), userService.signup);
+	router.post('/signup',passport.authenticate('signup'), userService.signup);
 
-	router.post('/login', passport.authenticate('login'), userService.login);
+	router.post('/login', userService.login);
 
 	router.get('/loggedin', userService.loginCheck);
 
@@ -21,6 +21,12 @@ module.exports = function Router(app, passport, userService) {
 	router.put('/services/todos/:id', auth, userService.updateTodo);
 
 	router.delete('/services/todos/:id', auth, userService.deleteTodo);
+
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: true }));
+
+	app.use(passport.initialize());
+	//app.use(passport.session());
 
 	app.use(router);
 }

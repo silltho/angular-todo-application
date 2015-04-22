@@ -1,17 +1,26 @@
-var passport = require('passport');
 var User = require('../model/user');
 
-module.exports = function UserService(userDAO){
+module.exports = function UserService(userDAO, passport){
 	var userDAO = userDAO;
 
-	this.signup = function(req, res) {
-		console.log('signup: ' + req.user.username + ' in service/user-service.js');
+	this.signup = function(req, res, next) {
+		console.log('signup: ' + req.body.username + ' in service/user-service.js');
+		//passport.authenticate('signup')(req);
+
+		debugger;
+		
+			
 		res.sendStatus(200);
+		
+		//res.sendStatus(500);
 	}
 
 	this.login = function(req, res) {
 		console.log('login successfull, welcome ' + req.user.username + ' in service/user-service.js');
-		res.sendStatus(200);
+		passport.authenticate('login')(req, res, function(){
+			res.sendStatus(200);
+		});
+		//res.sendStatus(500);
 	}
 
 	this.loginCheck = function(req, res) {

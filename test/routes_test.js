@@ -4,10 +4,12 @@ var express = require('express');
 
 var Test = require('./test');
 var test = {};
+var server = {};
 
 describe('Routes Tests', function(done) {
 	beforeEach(function() {
 		test = new Test();
+		server = request.agent(test.app);
 	});
 
 	it('should send request to /', function(done) {
@@ -17,9 +19,9 @@ describe('Routes Tests', function(done) {
 	});
 
 	it('should send request to /signup', function(done) {
-		request(test.app)
+		server
 			.post('/signup')
-			.send()
+			.send(test.createTestUser())
 			.expect(200, done);
 	});
 
