@@ -5,14 +5,7 @@ module.exports = function UserService(userDAO, passport){
 
 	this.signup = function(req, res, next) {
 		console.log('signup: ' + req.body.username + ' in service/user-service.js');
-		//passport.authenticate('signup')(req);
-
-		debugger;
-		
-			
 		res.sendStatus(200);
-		
-		//res.sendStatus(500);
 	}
 
 	this.login = function(req, res) {

@@ -12,14 +12,16 @@ describe('Authentication Tests', function() {
 	
 	it('should signup user', function(done) {
 		var req = {
-			username: 'test-username',
-			password: 'test-password',
-			firstname: 'test-firstname',
-			lastname: 'test-lastname',
-			email: 'test-email'
+			body: {
+				username: 'test-username',
+				password: 'test-password',
+				firstname: 'test-firstname',
+				lastname: 'test-lastname',
+				email: 'test-email'
+			}
 		};
 
-		test.passportStrategies.signup(req, function(err, signupUser) {
+		test.passportStrategies.signup(req, req.body.username, req.body.password, function(err, signupUser) {
 			should.not.exist(err);
 			signupUser.username.should.be.eql(req.username);
 			done();
@@ -28,16 +30,19 @@ describe('Authentication Tests', function() {
 
 	it('should login user', function(done) {
 		var req = {
-			username: 'test-username',
-			password: 'test-password',
-			firstname: 'test-firstname',
-			lastname: 'test-lastname',
-			email: 'test-email'
+			body: {
+				username: 'test-username',
+				password: 'test-password',
+				firstname: 'test-firstname',
+				lastname: 'test-lastname',
+				email: 'test-email'
+			}
 		};
+
 		
 		test.db.find = sinon.stub().yields(null, [test.createTestUser()]);
 
-		test.passportStrategies.login(req, function(err, loginUser) {
+		test.passportStrategies.login(req, req.body.username, req.body.password, function(err, loginUser) {
 			should.not.exist(err);
 			loginUser.username.should.be.eql(req.username);
 			done();

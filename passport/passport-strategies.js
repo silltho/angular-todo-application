@@ -3,7 +3,7 @@ var User = require('../model/user.js');
 
 module.exports = function PassportStrategies(userDAO) {
 	var userDAO = userDAO;
-	
+
 	this.signup = function(req, username, password, done) {
 		process.nextTick(function() {
 			console.log('check signup credentials in passport/passport-strategies.js');
@@ -21,29 +21,31 @@ module.exports = function PassportStrategies(userDAO) {
 					return done(err);
 				}
 				console.log('successful signup user with username = ['+createdUser.username+'] in passport/signup.js#signup');
-				return done(null, createdUser);
+				return done(createdUser);
 			});
 		});
 	}
 
 	this.login = function(req, username, password, done) {
-		console.log('check login credentials in passport/passport-strategies.js#login');
-		userDAO.readUsers({username: req.username}, function(err, foundUsers) {
-			if(err) {
-				console.error('error: ['+err.message+'] in passport/passport-strategies.js#login');
-				return done(err);
-			} 
-			if(foundUsers === false) {
-				var err = new Error('no user found with username = ['+req.username+'] in passport/passport-strategies.js#login');
-				return done(err);
-			} else {
-				for (var i = 0; i < foundUsers.length; i++) {
-					if(isValidPassword(foundUsers[i].password, req.password)) {
-						console.log('successful login user with username = ['+foundUsers[i].username+'] in passport/signup.js#login');
-						return done(null, foundUsers[i]);
+		process.nextTick(function() {
+			console.log('check login credentials in passport/passport-strategies.js#login');
+			userDAO.readUsers({username: req.body.username}, function(err, foundUsers) {
+				if(err) {
+					console.error('error: ['+err.message+'] in passport/passport-strategies.js#login');
+					return done(err);
+				} 
+				if(foundUsers === false) {
+					var err = new Error('no user found with username = ['+req.body.username+'] in passport/passport-strategies.js#login');
+					return done(err);
+				} else {
+					for (var i = 0; i < foundUsers.length; i++) {
+						if(isValidPassword(foundUsers[i].password, req.body.password)) {
+							console.log('successful login user with username = ['+foundUsers[i].username+'] in passport/signup.js#login');
+							return done(null, foundUsers[i]);
+						}
 					}
 				}
-			}
+			});
 		});
 	}
 }

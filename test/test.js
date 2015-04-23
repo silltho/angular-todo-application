@@ -21,6 +21,22 @@ module.exports = function Test() {
 
 	initPassport(passport, this.passportStrategies);
 
+	this.generatedUser = {
+		username: 'test-username1',
+		password: 'test-password1',
+		firstName: 'test-firstname1',
+		lastName: 'test-lastname1',
+		email: 'test-email1'
+	};
+
+	var req = {body: this.generatedUser};
+
+	this.passportStrategies.signup(req, req.body.username, req.body.password, function(err, createdUser) {
+		if(err) {
+			console.error(err);
+		}
+	});
+
 	this.createTestUser = function(){
 		var testUser = new User('test-username', this.createHash('test-password'), 'test-firstname', 'test-lastname', 'test-email');
 		testUser.createTodo('description');
@@ -34,4 +50,21 @@ module.exports = function Test() {
 	this.isValidPassword = function(storedPassword, password){
 		return bCrypt.compareSync(password, storedPassword);
 	}
+
+	function loginUser() {
+	return function(done) {
+		server
+			.post('/login')
+			.send()
+			.expect(302)
+			.expect('Location', '/')
+			.end(function() {
+				if (err) {
+					return done(err);
+				}
+				return done();
+			});
+
+		}
+	};
 };

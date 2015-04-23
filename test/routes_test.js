@@ -5,9 +5,10 @@ var express = require('express');
 var Test = require('./test');
 var test = {};
 var server = {};
+var cookie = {};
 
 describe('Routes Tests', function(done) {
-	beforeEach(function() {
+	/*beforeEach(function() {
 		test = new Test();
 		server = request.agent(test.app);
 	});
@@ -15,25 +16,66 @@ describe('Routes Tests', function(done) {
 	it('should send request to /', function(done) {
 		request(test.app)
 			.get('/')
-			.expect(200, done);
+			.end(function(err,res){
+				if(err) {
+					return done(err);
+				}
+				res.should.have.status(200);
+				return done();
+			});			
+	});
+
+	it('should send request to /login', function(done) {
+		request(test.app)
+			.get('/')
+			.send(test.generatedUser)
+			.end(function(err,res){
+				if(err) {
+					return done(err);
+				}
+				res.should.have.status(200);
+				return done();
+			});			
 	});
 
 	it('should send request to /signup', function(done) {
 		server
 			.post('/signup')
 			.send(test.createTestUser())
-			.expect(200, done);
+			.end(function(err,res){
+				if(err) {
+					return done(err);
+				}
+				res.should.have.status(200);
+				cookie = res.headers['set-cookie'];
+				return done();
+			});	
 	});
 
 	it('should send request to /services/todos', function(done) {
 		request(test.app)
 			.put('/services/todos')
-			.expect(200, done);
+			.end(function(err,res){
+				if(err) {
+					return done(err);
+				}
+				res.should.have.status(200);
+				cookie = res.headers['set-cookie'];
+				return done();
+			});	
 	});
 
 	it('should send request to /services/todos/:id', function(done) {
 		request(test.app)
 			.put('/services/todos/:id')
-			.expect(200, done);
-	});
+			.end(function(err,res){
+				if(err) {
+					return done(err);
+				}
+				res.should.have.status(200);
+				cookie = res.headers['set-cookie'];
+				return done();
+			});	
+	});*/
 });
+

@@ -23,7 +23,7 @@ describe('DAO Tests', function() {
 		test.userDAO.createUser(testUser, function(){
 			test.userDAO.readUsers({ _id: testUser._id }, function(err, foundUsers) {
 				foundUsers.should.not.be.false;
-				foundUsers.should.have.lengthOf(1);
+				foundUsers.should.have.lengthOf(2);
 				foundUsers[0].should.eql(testUser);
 				done(err);
 			});
@@ -40,7 +40,7 @@ describe('DAO Tests', function() {
 				test.userDAO.updateUser(testUser, function(err, numReplaced) {
 					test.userDAO.readUsers({ _id: testUser._id },function(err, updatedUsers) {
 						updatedUsers.should.not.be.false;
-						updatedUsers.should.have.lengthOf(1);
+						updatedUsers.should.have.lengthOf(2);
 						updatedUsers[0].should.eql(testUser);
 						done();
 					});
