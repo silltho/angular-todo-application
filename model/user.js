@@ -1,4 +1,5 @@
 var Todo = require('./todo');
+var should = require('should');
 
 function User(username, password, firstName, lastName, email){
 	this.username = username;
@@ -11,28 +12,35 @@ function User(username, password, firstName, lastName, email){
 }
 
 User.prototype.createTodo = function(description) {
+	description.should.be.ok;
 	var newTodo = new Todo(description);
 	this.todos.push(newTodo);
 	return newTodo;
 }
 
 User.prototype.getTodoById = function(id) {
+	id.should.be.ok;
 	var todoIndex = getArrayIndexById(id, this.todos);
 	return this.todos[todoIndex];
 }
 
 User.prototype.updateTodo = function(todo) {
+	todo.should.be.ok
+	todo._id.should.be.ok
 	var todoIndex = getArrayIndexById(todo._id, this.todos);
 	return this.todos[todoIndex] = todo;
 }
 
 User.prototype.deleteTodo = function(id) {
+	id.should.be.ok
 	var todoIndex = getArrayIndexById(id, this.todos);
 	this.todos.splice(todoIndex, 1);
 	return this.todos;
 }
 
 function getArrayIndexById(id, array) {
+	array.should.be.ok;
+	id.should.be.ok;
 	var lookup = {};
 	for (var i = 0, len = array.length; i < len; i++) {
 		lookup[array[i]._id] = i;

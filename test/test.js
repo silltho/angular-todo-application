@@ -40,6 +40,7 @@ module.exports = function Test() {
 	this.createTestUser = function(){
 		var testUser = new User('test-username', this.createHash('test-password'), 'test-firstname', 'test-lastname', 'test-email');
 		testUser.createTodo('description');
+		testUser._id = 'test-_id'
 		return testUser;
 	}
 
@@ -51,8 +52,7 @@ module.exports = function Test() {
 		return bCrypt.compareSync(password, storedPassword);
 	}
 
-	function loginUser() {
-	return function(done) {
+	this.loginUser = function(done) {
 		server
 			.post('/login')
 			.send()
@@ -64,7 +64,5 @@ module.exports = function Test() {
 				}
 				return done();
 			});
-
-		}
-	};
+	}
 };

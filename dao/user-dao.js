@@ -1,8 +1,13 @@
+var should = require('should');
+
 module.exports = function UserDAO(db) {
+	db.should.be.ok;
 	var db = db;
 
 	this.createUser = function(user, done){
-		db.find(user, function(err, users) {
+		user.username.should.be.ok;
+		user.password.should.be.ok;
+		db.find({username: user.username}, function(err, users) {
 			if (err) {
 				console.error('error in finding user: ['+err.message+'] in db/userDAO.js');
 				return done(err);
@@ -24,6 +29,7 @@ module.exports = function UserDAO(db) {
 	}
 
 	this.readUsers = function(searchParams, done) {
+		searchParams.should.be.ok;
 		db.find(searchParams, function(err, users) {
 			if (err) {
 				console.error('error in readUsers: ['+err.message+'] in db/userDAO.js'); 
@@ -39,6 +45,8 @@ module.exports = function UserDAO(db) {
 	}
 
 	this.updateUser = function(user, done) {
+		user.should.be.ok;
+		user._id.should.be.ok;
 		db.update({ _id:user._id }, user, function (err, numReplaced) {
 			if (err) {
 				return done(err);
@@ -49,6 +57,8 @@ module.exports = function UserDAO(db) {
 	}
 
 	this.deleteUser = function(user, done) {
+		user.should.be.ok;
+		user._id.should.be.ok;
 		db.remove({ _id:user._id }, {}, function(err) {
 			if (err) {
 				return done(err);

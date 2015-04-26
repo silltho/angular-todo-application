@@ -12,7 +12,7 @@ module.exports = function Router(app, passport, userService) {
 
 	router.post('/signup',passport.authenticate('signup'), userService.signup);
 
-	router.post('/login',passport.authenticate('login') ,userService.login);
+	router.post('/login',passport.authenticate('login'), userService.login);
 
 	router.get('/loggedin', userService.loginCheck);
 

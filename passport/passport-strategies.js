@@ -21,7 +21,7 @@ module.exports = function PassportStrategies(userDAO) {
 					return done(err);
 				}
 				console.log('successful signup user with username = ['+createdUser.username+'] in passport/signup.js#signup');
-				return done(createdUser);
+				return done(null, createdUser);
 			});
 		});
 	}

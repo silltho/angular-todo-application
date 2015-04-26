@@ -23,7 +23,7 @@ describe('Authentication Tests', function() {
 
 		test.passportStrategies.signup(req, req.body.username, req.body.password, function(err, signupUser) {
 			should.not.exist(err);
-			signupUser.username.should.be.eql(req.username);
+			signupUser.username.should.be.eql(req.body.username);
 			done();
 		});
 	})
@@ -44,7 +44,7 @@ describe('Authentication Tests', function() {
 
 		test.passportStrategies.login(req, req.body.username, req.body.password, function(err, loginUser) {
 			should.not.exist(err);
-			loginUser.username.should.be.eql(req.username);
+			loginUser.username.should.be.eql(req.body.username);
 			done();
 		});
 	})
