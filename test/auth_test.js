@@ -12,13 +12,7 @@ describe('Authentication Tests', function() {
 	
 	it('should signup user', function(done) {
 		var req = {
-			body: {
-				username: 'test-username',
-				password: 'test-password',
-				firstname: 'test-firstname',
-				lastname: 'test-lastname',
-				email: 'test-email'
-			}
+			body: test.createTestUser()
 		};
 
 		test.passportStrategies.signup(req, req.body.username, req.body.password, function(err, signupUser) {
@@ -30,14 +24,9 @@ describe('Authentication Tests', function() {
 
 	it('should login user', function(done) {
 		var req = {
-			body: {
-				username: 'test-username',
-				password: 'test-password',
-				firstname: 'test-firstname',
-				lastname: 'test-lastname',
-				email: 'test-email'
-			}
+			body: test.createTestUser()
 		};
+		req.body.password = 'test-password';
 
 		
 		test.db.find = sinon.stub().yields(null, [test.createTestUser()]);
