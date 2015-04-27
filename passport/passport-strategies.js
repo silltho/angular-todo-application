@@ -54,7 +54,6 @@ module.exports = function PassportStrategies(userDAO) {
 					return done(err);
 				} else {
 					for (var i = 0; i < foundUsers.length; i++) {
-						debugger;
 						if(isValidPassword(foundUsers[i].password, req.body.password)) {
 							console.log('successful login user with username = ['+foundUsers[i].username+'] in passport/signup.js#login');
 							return done(null, foundUsers[i]);
