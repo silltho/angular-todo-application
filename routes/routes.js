@@ -1,5 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var expressSession = require('express-session');
+var cookieParser = require('cookie-parser');
 
 module.exports = function Router(app, passport, userService) {
 	var router = express.Router();
@@ -16,17 +18,23 @@ module.exports = function Router(app, passport, userService) {
 
 	router.get('/loggedin', userService.loginCheck);
 
+	router.get('/services/todos', auth, userService.getAllTodos);
+
 	router.post('/services/todos', auth, userService.createTodo);
 
 	router.put('/services/todos/:id', auth, userService.updateTodo);
 
 	router.delete('/services/todos/:id', auth, userService.deleteTodo);
 
+
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: true }));
 
+	app.use(expressSession({secret: 'mySecretKey'}));
+	app.use(cookieParser());
+
 	app.use(passport.initialize());
-	//app.use(passport.session());
+	app.use(passport.session());
 
 	app.use(router);
 }

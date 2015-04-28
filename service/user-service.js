@@ -7,14 +7,14 @@ module.exports = function UserService(userDAO, passport){
 	var userDAO = userDAO;
 
 	this.signup = function(req, res) {
-		req.user.username.should.be.ok;
+		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
 		console.log('signup: ' + req.user.username + ' in service/user-service.js');
 		res.sendStatus(200);
 	}
 
 	this.login = function(req, res) {
-		req.user.username.should.be.ok;
+		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
 		console.log('login successfull, welcome ' + req.user.username + ' in service/user-service.js');
 		res.sendStatus(200);
@@ -30,13 +30,14 @@ module.exports = function UserService(userDAO, passport){
 	}
 
 	this.getAllTodos = function(req, res) {
-		req.user.todos.should.be.ok;
+		debugger;
+		should.exist(req.user.todos);
 		res.json.should.be.a.function;
 		res.json(req.user.todos);
 	}
 
 	this.createTodo = function(req, res) {
-		req.body.description.should.be.ok;
+		should.exist(req.body.description);
 		req.user.createTodo.should.be.a.function;
 		res.json.should.be.a.function;
 		if(checkRequestForUser(req)) {
@@ -47,7 +48,7 @@ module.exports = function UserService(userDAO, passport){
 	}
 
 	this.updateTodo = function(req, res) {
-		req.body.should.be.ok;
+		should.exist(req.body);
 		req.user.updateTodo.should.be.a.function;
 		res.json.should.be.a.function;
 		if(checkRequestForUser(req)) {
@@ -58,7 +59,7 @@ module.exports = function UserService(userDAO, passport){
 	}
 
 	this.deleteTodo = function(req, res) {
-		req.params.id.should.be.ok;
+		should.exist(req.params.id);
 		req.user.deleteTodo.should.be.a.function;
 		res.sendStatus.should.be.a.function;
 		if(checkRequestForUser(req)) {
@@ -70,16 +71,14 @@ module.exports = function UserService(userDAO, passport){
 	}
 };
 
-function checkRequestForUser(req){
-	req.user.should.be.ok;
+function checkRequestForUser(req) {
+	should.exist(req.user);
 	req.user.should.be.instanceof.User;
 	return true;
 }
 
-function auth(req){ 
-	req.should.be.ok;
-	req.user.username.should.be.ok;
-	req.isAuthenticated.should.be.a.function;
+function auth(req) {
+	should.exist(req);
 	if (!req.isAuthenticated()) {
 		console.error(req.user.username + ' is not authenticate in service/user-service.js'); 
 		return false;

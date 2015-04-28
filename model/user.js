@@ -49,8 +49,8 @@ function getArrayIndexById(id, array) {
 		console.log('found todo with id = ' + id + ' in models/user.js');
 		return lookup[id];
 	}
-	console.error('no todo found with id = ' + id + ' in models/user.js');
-	throw 'no todo found with id = ' + id + ' in models/user.js';
+	var err = new Error('no todo found with id = ' + id + ' in models/user.js');
+	return err;
 }
 
 module.exports = User;

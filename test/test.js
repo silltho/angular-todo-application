@@ -2,6 +2,8 @@ var Datastore = require('nedb');
 var express = require('express');
 var bCrypt = require('bcrypt-nodejs');
 var passport = require('passport');
+var request = require('supertest');
+var should = require('should');
 
 var UserService = require('../service/user-service');
 var PassportStrategies = require('../passport/passport-strategies');
@@ -12,21 +14,24 @@ var initPassport = require('../passport/passport-init');
 
 module.exports = function Test() {
 
+	var testUserCount = 0;
+
 	this.app = express();
 	this.db = new Datastore({ autoload: true });
 	this.userDAO = new UserDAO(this.db);
 	this.userService = new UserService(this.userDAO, passport);
 	this.passportStrategies = new PassportStrategies(this.userDAO);
 	this.router = new Router(this.app, passport, this.userService);
+	this.server = request.agent(this.app);
 
 	initPassport(passport, this.passportStrategies);
 
-	this.generatedUser = {
+	/*this.generatedUser = {
 		username: 'test-username1',
 		password: 'test-password1',
 		firstName: 'test-firstname1',
 		lastName: 'test-lastname1',
-		email: 'test-email1'
+		email: 'test-email1',
 	};
 
 	var req = {body: this.generatedUser};
@@ -35,12 +40,20 @@ module.exports = function Test() {
 		if(err) {
 			console.error(err);
 		}
-	});
+	});*/
 
 	this.createTestUser = function(){
-		var testUser = new User('test-username', this.createHash('test-password'), 'test-firstname', 'test-lastname', 'test-email');
+		var testUser = new User(
+			'test-username'+testUserCount, 
+			this.createHash('test-password'), 
+			'test-firstname'+testUserCount, 
+			'test-lastname'+testUserCount, 
+			'test-email'+testUserCount
+		);
 		testUser.createTodo('description');
-		testUser._id = 'test-_id'
+		//testUser._id = 'test-_id'+testUserCount
+		testUserCount++;
+		debugger;
 		return testUser;
 	}
 
@@ -53,16 +66,16 @@ module.exports = function Test() {
 	}
 
 	this.loginUser = function(done) {
-		server
-			.post('/login')
-			.send()
-			.expect(302)
-			.expect('Location', '/')
-			.end(function() {
-				if (err) {
-					return done(err);
-				}
-				return done();
+		this.server.post('/login')
+			.send(this.generatedUser)
+			.end(function(err,res) {
+				should.not.exist(err);
+				res.status.should.eql(200)
+				done();
 			});
 	}
+
+	this.userDAO.createUser(this.createTestUser(), function(err, createdUser) {
+	});
+	
 };

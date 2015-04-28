@@ -57,7 +57,6 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.json = sinon.spy();
-			debugger;
 			req.user = test.createTestUser();
 
 			test.userService.getAllTodos(req, res);
