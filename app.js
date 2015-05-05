@@ -1,3 +1,7 @@
+var log = require('bunyan').createLogger({
+	name: 'todo-applikation-tests'
+});
+var logger = require('morgan');
 var Datastore = require('nedb');
 var express = require('express');
 var passport = require('passport');
@@ -10,11 +14,21 @@ var initPassport = require('./passport/passport-init');
 
 var app = express();
 var db = new Datastore({filename: './db/db.db', autoload: true});
-var userDAO = new UserDAO(db);
-var userService = new UserService(userDAO);
-var passportStrategies = new PassportStrategies(userDAO);
-var router = new Router(app, passport, userService);
+var userDAO = new UserDAO(db, log.child({
+	destination: './dao/user-dao.js'
+}));
+var userService = new UserService(userDAO, passport, log.child({
+	destination: './service/user-service.js'
+}));
+var passportStrategies = new PassportStrategies(userDAO, log.child({
+	destination: './passport/passport-strategies.js'
+}));
+var router = new Router(app, passport, userService, log.child({
+	destination: './routes/routes.js'
+}));
 
 initPassport(passport, passportStrategies);
+
+app.use(logger('dev'));
 
 module.exports = app;

@@ -86,7 +86,7 @@ module.exports = function UserService(userDAO, passport, log) {
 		}
 	}
 	function auth(req) {
-		should.exist(req);
+		should.exist(req.isAuthenticated());
 		if (!req.isAuthenticated()) {
 			log.info({'function': 'auth'}, '%s is not authenticated', req.user.username);
 			return false;

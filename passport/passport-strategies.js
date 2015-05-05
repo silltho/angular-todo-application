@@ -6,8 +6,7 @@ module.exports = function PassportStrategies(userDAO, log) {
 	should.exist(userDAO);
 	should.exist(log);
 
-	this.signup = function (req, username, password, done) //noinspection BadExpressionStatementJS
-	{
+	this.signup = function (req, username, password, done) {
 		should.exist(req.body.username);
 		should.exist(req.body.password);
 		should.exist(req.body.firstName);
@@ -37,6 +36,7 @@ module.exports = function PassportStrategies(userDAO, log) {
 	};
 
 	this.login = function (req, username, password, done) {
+		debugger;
 		should.exist(req.body.username);
 		should.exist(req.body.password);
 		should.exist(done);
