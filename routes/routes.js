@@ -9,7 +9,7 @@ module.exports = function Router(app, passport, userService, log) {
 	should.exist(passport);
 	should.exist(userService);
 	should.exist(log);
-
+	debugger;
 	var router = express.Router();
 	var auth = function (req, res, next) {
 		if (!req.isAuthenticated()) {
@@ -40,8 +40,6 @@ module.exports = function Router(app, passport, userService, log) {
 
 	router.delete('/services/todos/:id', auth, userService.deleteTodo);
 
-
-	//noinspection JSCheckFunctionSignatures
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({extended: true}));
 

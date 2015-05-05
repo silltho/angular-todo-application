@@ -15,4 +15,6 @@ module.exports = function initPassport(passport, passportStrategies) {
 
 	passport.use('signup', new LocalStrategy({passReqToCallback: true}, passportStrategies.signup));
 	passport.use('login', new LocalStrategy({passReqToCallback: true}, passportStrategies.login));
+
+	return passport;
 };
