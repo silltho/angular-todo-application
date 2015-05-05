@@ -20,15 +20,15 @@ module.exports = function Router(app, passport, userService, log) {
 		}
 	};
 
-	router.get('/', function(req, res, next) {
+	router.get('/', function (req, res, next) {
 		log.info('render index.ejs');
 		res.sendStatus(200);
 		next();
 	});
 
-	router.post('/signup',passport.authenticate('signup'), userService.signup);
+	router.post('/signup', passport.authenticate('signup'), userService.signup);
 
-	router.post('/login',passport.authenticate('login'), userService.login);
+	router.post('/login', passport.authenticate('login'), userService.login);
 
 	router.get('/loggedin', userService.loginCheck);
 
@@ -41,8 +41,9 @@ module.exports = function Router(app, passport, userService, log) {
 	router.delete('/services/todos/:id', auth, userService.deleteTodo);
 
 
+	//noinspection JSCheckFunctionSignatures
 	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({ extended: true }));
+	app.use(bodyParser.urlencoded({extended: true}));
 
 	app.use(expressSession({secret: 'mySecretKey'}));
 	app.use(cookieParser());
@@ -51,5 +52,5 @@ module.exports = function Router(app, passport, userService, log) {
 	app.use(passport.session());
 
 	app.use(router);
-}
+};
 

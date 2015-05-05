@@ -25,6 +25,7 @@ var initPassport = require('../passport/passport-init');
 module.exports = function Test() {
 
 	var testUserCount = 0;
+	var testUser = {};
 
 	this.app = express();
 	this.db = new Datastore({
@@ -62,36 +63,39 @@ module.exports = function Test() {
 			'test-firstname' + testUserCount, 'test-lastname' + testUserCount,
 			'test-email' + testUserCount);
 		testUser.createTodo('description');
-		testUser._id = 'test-_id' + testUserCount
+		testUser._id = 'test-_id' + testUserCount;
 		testUserCount++;
+		return testUser;
+	};
+
+	this.signupTestUser = function (testUser, done) {
 		var req = {
 			body: testUser
 		};
+
 		this.passportStrategies.signup(req, testUser.username, testUser.password,
 			function (err, createdUser) {
 				if (err) {
-					console.error(err);
+					return done(err);
 				}
+				return done(null, createdUser);
 			});
-		return testUser;
-	}
+	};
 
-	this.createHash = function (password) {
-		return bCrypt.hashSync(password, bCrypt.genSaltSync(10));
-	}
+	this.loginUser = function (done) {
+		var createUser = this.createTestUser();
+		var testUser = JSON.parse(JSON.stringify(createUser));
+		var server = this.server;
 
-	this.isValidPassword = function (storedPassword, password) {
-		return bCrypt.compareSync(password, storedPassword);
-	}
-
-	this.loginUser = function(done) {
-		this.server.post('/login').send(this.generatedUser).end(function (err, res) {
-			should.not.exist(err);
-			res.status.should.eql(200)
-			done();
+		this.userDAO.createUser(createUser, function (err, createdUser) {
+			server
+				.post('/login')
+				.send(testUser)
+				.end(function (err, res) {
+					should.not.exist(err);
+					res.status.should.eql(200);
+					done(testUser);
+				});
 		});
 	}
-
-	this.userDAO.createUser(this.createTestUser(), function(err, createdUser) {
-	});
 };

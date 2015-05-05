@@ -1,4 +1,3 @@
-var Datastore = require('nedb');
 var should = require('should');
 
 var Test = require('./test');

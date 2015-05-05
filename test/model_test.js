@@ -1,12 +1,11 @@
 var should = require('should');
-var User = require('../model/user');
 
 var Test = require('./test');
 var test = new Test();
 
 describe('Model Tests', function() {
 
-	it('should create User', function(done) {
+	it('should create User', function (done) {
 		var testUser = test.createTestUser();
 
 		testUser.username.should.exist;

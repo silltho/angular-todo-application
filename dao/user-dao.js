@@ -1,24 +1,26 @@
 var should = require('should');
-var assert = require('assert');
+var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function UserDAO(db, log) {
 	should.exist(db);
 	should.exist(log);
 
-	this.createUser = function(user, done){
+	this.createUser = function (user, done) {
 		should.exist(user);
 		should.exist(done);
 		done.should.be.a.function;
 
-		db.find({username: user.username}, function(err, users) {
+		user.password = createHash(user.password);
+
+		db.find({username: user.username}, function (err, users) {
 			if (err) {
 				return done(err);
 			}
 			if (users.length !== 0) {
 				return done(new Error('user with username = [' + user.username + '] already exists in db/user-dao.js#createUser'));
 			} else {
-				db.insert(user, function(err, createdUser) {
-					if (err){
+				db.insert(user, function (err, createdUser) {
+					if (err) {
 						return done(err);
 					}
 					log.info({'function': 'createUser'}, 'successful create user: [%s]', createdUser.username);
@@ -28,12 +30,13 @@ module.exports = function UserDAO(db, log) {
 		});
 	};
 
-	this.readUsers = function(searchParams, done) {
+	this.readUsers = function (searchParams, done) //noinspection BadExpressionStatementJS
+	{
 		should.exist(searchParams);
 		should.exist(done);
 		done.should.be.a.function;
 
-		db.find(searchParams, function(err, users) {
+		db.find(searchParams, function (err, users) {
 			if (err) {
 				return done(err);
 			}
@@ -48,12 +51,13 @@ module.exports = function UserDAO(db, log) {
 		});
 	};
 
-	this.updateUser = function(user, done) {
+	this.updateUser = function (user, done) //noinspection BadExpressionStatementJS
+	{
 		should.exist(user);
 		should.exist(done);
 		done.should.be.a.function;
 
-		db.update({ _id:user._id }, user, function (err, numReplaced) {
+		db.update({_id: user._id}, user, function (err, numReplaced) {
 			if (err) {
 				return done(err);
 			}
@@ -63,12 +67,13 @@ module.exports = function UserDAO(db, log) {
 		});
 	};
 
-	this.deleteUser = function(user, done) {
+	this.deleteUser = function (user, done) //noinspection BadExpressionStatementJS
+	{
 		should.exist(user);
 		should.exist(done);
 		done.should.be.a.function;
 
-		db.remove({ _id:user._id }, {}, function(err) {
+		db.remove({_id: user._id}, {}, function (err) {
 			if (err) {
 				return done(err);
 			}
@@ -77,4 +82,9 @@ module.exports = function UserDAO(db, log) {
 			done(null);
 		});
 	};
+
+	function createHash(password) {
+		//log.info({'function': 'createHash'}, 'create hash for user password');
+		return bCrypt.hashSync(password, bCrypt.genSaltSync(10));
+	}
 };

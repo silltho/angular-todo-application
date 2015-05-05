@@ -7,6 +7,9 @@ pids
 *.pid
 *.seed
 
+#WebStrom Project Files
+.idea
+
 #sublime-workspace files
 *.sublime-workspace
 

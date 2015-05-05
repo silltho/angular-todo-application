@@ -2,7 +2,7 @@ module.exports = function Todo(description){
 	this._id = generateGUID();
 	this.description = description;
 	this.done = false;
-}
+};
 
 function generateGUID() {
   function s4() {
