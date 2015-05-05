@@ -2,12 +2,26 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var cookieParser = require('cookie-parser');
+var should = require('should');
 
-module.exports = function Router(app, passport, userService) {
+module.exports = function Router(app, passport, userService, log) {
+	should.exist(app);
+	should.exist(passport);
+	should.exist(userService);
+	should.exist(log);
+
 	var router = express.Router();
+	var auth = function (req, res, next) {
+		if (!req.isAuthenticated()) {
+			log.info({'function': 'auth'}, 'not authenticate send 401');
+			res.sendStatus(401);
+		} else {
+			next();
+		}
+	};
 
 	router.get('/', function(req, res, next) {
-		console.log('render index.ejs');
+		log.info('render index.ejs');
 		res.sendStatus(200);
 		next();
 	});
@@ -39,12 +53,3 @@ module.exports = function Router(app, passport, userService) {
 	app.use(router);
 }
 
-var auth = function(req, res, next){ 
-	if (!req.isAuthenticated()) {
-		console.log('not authenticate send 401'); 
-		res.sendStatus(401);
-	} else { 
-		console.log('authenticate'); 
-		next();
-	}
-};

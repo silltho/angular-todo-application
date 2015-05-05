@@ -40,7 +40,7 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.sendStatus = sinon.spy();
-			req.user = test.createTestUser();
+			req.user = test.generatedUser;
 			req.isAuthenticated = function() {
 				return true;
 			};
@@ -57,7 +57,7 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.json = sinon.spy();
-			req.user = test.createTestUser();
+			req.user = test.generatedUser;
 
 			test.userService.getAllTodos(req, res);
 
@@ -69,7 +69,7 @@ describe('Service Tests', function() {
 			var req = {};
 			var res = {};
 			var spy = res.json = sinon.spy();
-			req.user = test.createTestUser();
+			req.user = test.generatedUser;
 			req.body = {description: 'testDescription'};
 
 			test.userService.createTodo(req, res);

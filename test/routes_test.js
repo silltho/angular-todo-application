@@ -23,9 +23,10 @@ describe('Routes Tests', function(done) {
 	});
 
 	it('should send request to /login', function(done) {
+		debugger;
 		test.server
 			.post('/login')
-			.send(test.generatedUser)
+			.send(test.getTestUser0())
 			.end(function(err,res){
 				should.not.exist(err);
 				res.status.should.eql(200);

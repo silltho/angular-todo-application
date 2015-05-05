@@ -24,12 +24,13 @@ describe('Authentication Tests', function() {
 
 	it('should login user', function(done) {
 		var req = {
-			body: test.createTestUser()
+			body: {
+				username: test.generatedUser.username,
+				password: 'password'
+			}
 		};
-		req.body.password = 'test-password';
 
-		
-		test.db.find = sinon.stub().yields(null, [test.createTestUser()]);
+		test.db.find = sinon.stub().yields(null, [test.generatedUser]);
 
 		test.passportStrategies.login(req, req.body.username, req.body.password, function(err, loginUser) {
 			should.not.exist(err);
