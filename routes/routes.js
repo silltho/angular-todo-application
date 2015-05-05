@@ -5,50 +5,50 @@ var cookieParser = require('cookie-parser');
 var should = require('should');
 
 module.exports = function Router(app, passport, userService, log) {
-	should.exist(app);
-	should.exist(passport);
-	should.exist(userService);
-	should.exist(log);
-	debugger;
-	var router = express.Router();
-	var auth = function (req, res, next) {
-		if (!req.isAuthenticated()) {
-			log.info({'function': 'auth'}, 'not authenticate send 401');
-			res.sendStatus(401);
-		} else {
-			next();
-		}
-	};
+    should.exist(app);
+    should.exist(passport);
+    should.exist(userService);
+    should.exist(log);
 
-	router.get('/', function (req, res, next) {
-		log.info('render index.ejs');
-		res.sendStatus(200);
-		next();
-	});
+    var router = express.Router();
+    var auth = function (req, res, next) {
+        if (!req.isAuthenticated()) {
+            log.info({'function': 'auth'}, 'not authenticate send 401');
+            res.sendStatus(401);
+        } else {
+            next();
+        }
+    };
 
-	router.post('/signup', passport.authenticate('signup'), userService.signup);
+    router.get('/', function (req, res, next) {
+        log.info('render index.ejs');
+        res.sendStatus(200);
+        next();
+    });
 
-	router.post('/login', passport.authenticate('login'), userService.login);
+    router.post('/signup', passport.authenticate('signup'), userService.signup);
 
-	router.get('/loggedin', userService.loginCheck);
+    router.post('/login', passport.authenticate('login'), userService.login);
 
-	router.get('/services/todos', auth, userService.getAllTodos);
+    router.get('/loggedin', userService.loginCheck);
 
-	router.post('/services/todos', auth, userService.createTodo);
+    router.get('/services/todos', auth, userService.getAllTodos);
 
-	router.put('/services/todos/:id', auth, userService.updateTodo);
+    router.post('/services/todos', auth, userService.createTodo);
 
-	router.delete('/services/todos/:id', auth, userService.deleteTodo);
+    router.put('/services/todos/:id', auth, userService.updateTodo);
 
-	app.use(bodyParser.json());
-	app.use(bodyParser.urlencoded({extended: true}));
+    router.delete('/services/todos/:id', auth, userService.deleteTodo);
 
-	app.use(expressSession({secret: 'mySecretKey'}));
-	app.use(cookieParser());
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({extended: true}));
 
-	app.use(passport.initialize());
-	app.use(passport.session());
+    app.use(expressSession({secret: 'mySecretKey'}));
+    app.use(cookieParser());
 
-	app.use(router);
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(router);
 };
 

@@ -36,7 +36,6 @@ module.exports = function PassportStrategies(userDAO, log) {
 	};
 
 	this.login = function (req, username, password, done) {
-		debugger;
 		should.exist(req.body.username);
 		should.exist(req.body.password);
 		should.exist(done);

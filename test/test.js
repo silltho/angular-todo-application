@@ -47,17 +47,6 @@ module.exports = function Test() {
 
 	initPassport(passport, this.passportStrategies);
 
-	/*
-	 * this.generatedUser = { username: 'test-username1', password:
-	 * 'test-password1', firstName: 'test-firstname1', lastName: 'test-lastname1',
-	 * email: 'test-email1', };
-	 *
-	 * var req = {body: this.generatedUser};
-	 *
-	 * this.passportStrategies.signup(req, req.body.username, req.body.password,
-	 * function(err, createdUser) { if(err) { console.error(err); } });
-	 */
-
 	this.createTestUser = function () {
 		var testUser = new User('test-username' + testUserCount, 'password',
 			'test-firstname' + testUserCount, 'test-lastname' + testUserCount,
