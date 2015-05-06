@@ -8,8 +8,8 @@ pids
 *.seed
 
 #WebStrom Project Files
-.idea
-.idea/**.*
+#.idea
+#.idea/**.*
 
 #sublime-workspace files
 *.sublime-workspace

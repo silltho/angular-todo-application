@@ -10,14 +10,14 @@ module.exports = function UserService(userDAO, passport, log) {
 	this.signup = function (req, res) {
 		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
-		log.info({'function': 'signup'}, 'successful signup user %s', req.user.username);
+		log.info({'function': 'signup'}, 'successful signup user [%s]', req.user.username);
 		res.sendStatus(200);
 	};
 
 	this.login = function (req, res) {
 		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
-		log.info({'function': 'login'}, 'successful login user %s', req.user.username);
+		log.info({'function': 'login'}, 'successful login user [%s]', req.user.username);
 		res.sendStatus(200);
 	};
 
@@ -88,10 +88,10 @@ module.exports = function UserService(userDAO, passport, log) {
 	function auth(req) {
 		should.exist(req.isAuthenticated());
 		if (!req.isAuthenticated()) {
-			log.info({'function': 'auth'}, '%s is not authenticated', req.user.username);
+			log.info({'function': 'auth'}, 'not authenticated');
 			return false;
 		} else {
-			log.info({'function': 'auth'}, '%s is authenticated', req.user.username);
+			log.info({'function': 'auth'}, '[%s] is authenticated', req.user.username);
 			return true
 		}
 	}

@@ -21,31 +21,20 @@ var UserDAO = require('../dao/user-dao');
 var User = require('../model/user');
 var Router = require('../routes/routes');
 var initPassport = require('../passport/passport-init');
+var TodoApplication = require('../app.js');
 
 module.exports = function Test() {
 
 	var testUserCount = 0;
-	var testUser = {};
-
-	this.app = express();
 	this.db = new Datastore({
 		autoload: true
 	});
-	this.userDAO = new UserDAO(this.db, log.child({
-		destination: './dao/user-dao.js'
-	}));
-	this.userService = new UserService(this.userDAO, passport, log.child({
-		destination: './service/user-service.js'
-	}));
-	this.passportStrategies = new PassportStrategies(this.userDAO, log.child({
-		destination: './passport/passport-strategies.js'
-	}));
-	this.router = new Router(this.app, passport, this.userService, log.child({
-		destination: './routes/routes.js'
-	}));
-	this.server = request.agent(this.app);
-
-	initPassport(passport, this.passportStrategies);
+	this.app = new TodoApplication(this.db, log);
+	this.userDAO = this.app.userDAO;
+	this.userService = this.app.userService;
+	this.passportStrategies = this.app.passportStrategies;
+	this.router = this.app.router;
+	this.server = request.agent(this.app.app);
 
 	this.createTestUser = function () {
 		var testUser = new User('test-username' + testUserCount, 'password',
@@ -62,7 +51,7 @@ module.exports = function Test() {
 			body: testUser
 		};
 
-		this.passportStrategies.signup(req, testUser.username, testUser.password,
+		this.app.passportStrategies.signup(req, testUser.username, testUser.password,
 			function (err, createdUser) {
 				if (err) {
 					return done(err);
@@ -76,7 +65,7 @@ module.exports = function Test() {
 		var testUser = JSON.parse(JSON.stringify(createUser));
 		var server = this.server;
 
-		this.userDAO.createUser(createUser, function (err, createdUser) {
+		this.app.userDAO.createUser(createUser, function (err, createdUser) {
 			server
 				.post('/login')
 				.send(testUser)

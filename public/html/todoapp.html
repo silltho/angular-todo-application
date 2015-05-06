@@ -1,0 +1,77 @@
+<meta charset="utf-8">
+<div ng-controller="toDoController" class="app-container">
+    <h1>ToDoApp - Applikation (AngularJS)</h1>
+    <hr>
+    <div class="panel panel-info">
+        <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">
+                <strong>Zu Erledigen</strong>
+            </h3>
+            <span class="pull-right">Anzahl: {{notDoneToDos.length}}</span>
+        </div>
+        <table class="table table-striped panel-body">
+            <tr>
+                <td colspan="2">
+                    <form ng-submit="addToDo(toDoAdd)" style="margin-bottom: 0px">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <input class="form-control" type="text"
+                                       ng-model="toDoAdd.description" placeholder="Beschreibung ToDo"/>
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="submit" class="btn btn-default pull-right"
+                                        style="width: 100%">hinzufügen
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            <tr
+                    ng-repeat="notDoneToDo in allToDos | filter:filterNotDone as notDoneToDos">
+                <td ng-hide="notDoneToDo.editing"
+                    ng-click="notDoneToDo.editing = true" class="col-lg-10">
+                    <div class="editable-field">
+                        {{notDoneToDo.description}} <span
+                            class="glyphicon glyphicon-pencil pull-right"></span>
+                    </div>
+                </td>
+                <td ng-show="notDoneToDo.editing" class="col-lg-10"><input
+                        ng-model="notDoneToDo.description"
+                        ng-enter="updateToDo(notDoneToDo)"
+                        ng-blur="updateToDo(notDoneToDo)"
+                        autofocus-when="notDoneToDo.editing" ng-required
+                        class="form-control" type="text"/>
+    </div>
+    </td>
+    <td class="col-lg-2 text-right"><span
+            ng-click="notDoneToDo.done = true;updateToDo(notDoneToDo)"
+            class="icon icon-done glyphicon glyphicon-ok"></span> <span
+            ng-click="deleteToDo(notDoneToDo)"
+            class="icon icon-delete glyphicon glyphicon-trash"></span></td>
+    </tr>
+    </table>
+</div>
+<div class="panel panel-success">
+    <div class="panel-heading clearfix">
+        <h3 class="panel-title pull-left">
+            <strong>Erledigt</strong>
+        </h3>
+        <span class="pull-right">Anzahl: {{doneToDos.length}}</span>
+    </div>
+    <table class="table table-striped panel-body">
+        <tr ng-repeat="doneToDo in allToDos | filter:filterDone as doneToDos">
+            <td class="col-lg-10">{{doneToDo.description}}</td>
+            <td class="col-lg-2 text-right"><span
+                    ng-click="doneToDo.done = false;updateToDo(doneToDo)"
+                    class="icon icon-undone glyphicon glyphicon-remove"></span> <span
+                    ng-click="deleteToDo(doneToDo,$index)"
+                    class="icon icon-delete glyphicon glyphicon-trash"></span></td>
+        </tr>
+    </table>
+</div>
+</div>
+<div class="app-footer">
+    <a href="#/services">Rest Services</a><span class="pull-right">&copy;
+    2015</span>
+</div>
