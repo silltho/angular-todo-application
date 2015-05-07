@@ -30,6 +30,12 @@ module.exports = function UserService(userDAO, passport, log) {
 		}
 	};
 
+	this.logout = function (req, res) {
+		should.exist(req.logout);
+		req.logout();
+		res.redirect('/');
+	};
+
 	this.getAllTodos = function (req, res) {
 		should.exist(req.user.todos);
 		res.json.should.be.a.function;
@@ -83,16 +89,6 @@ module.exports = function UserService(userDAO, passport, log) {
 		else {
 			req.user.__proto__ = User.prototype;
 			return req.user;
-		}
-	}
-	function auth(req) {
-		should.exist(req.isAuthenticated());
-		if (!req.isAuthenticated()) {
-			log.info({'function': 'auth'}, 'not authenticated');
-			return false;
-		} else {
-			log.info({'function': 'auth'}, '[%s] is authenticated', req.user.username);
-			return true
 		}
 	}
 };

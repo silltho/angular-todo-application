@@ -29,6 +29,8 @@ module.exports = function Router(app, passport, userService, log) {
 
 	this.router.get('/loggedin', userService.loginCheck);
 
+	this.router.get('/logout', userService.logout);
+
 	this.router.get('/services/todos', auth, userService.getAllTodos);
 
 	this.router.post('/services/todos', auth, userService.createTodo);
