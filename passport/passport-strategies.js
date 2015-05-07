@@ -9,9 +9,9 @@ module.exports = function PassportStrategies(userDAO, log) {
 	this.signup = function (req, username, password, done) {
 		should.exist(req.body.username);
 		should.exist(req.body.password);
-		should.exist(req.body.firstName);
+		/*should.exist(req.body.firstName);
 		should.exist(req.body.lastName);
-		should.exist(req.body.email);
+		 should.exist(req.body.email);*/
 		should.exist(done);
 		done.should.be.a.function;
 
