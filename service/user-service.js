@@ -11,29 +11,26 @@ module.exports = function UserService(userDAO, passport, log) {
 		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
 		log.info({'function': 'signup'}, 'successful signup user [%s]', req.user.username);
-		res.sendStatus(200);
+		res.json(req.user);
 	};
 
 	this.login = function (req, res) {
 		should.exist(req.user.username);
 		res.sendStatus.should.be.a.function;
 		log.info({'function': 'login'}, 'successful login user [%s]', req.user.username);
-		res.sendStatus(200);
+		res.json(req.user);
 	};
 
 	this.loginCheck = function (req, res) {
+		should.exist(req.user);
 		res.sendStatus.should.be.a.function;
-		if (auth(req) == true) {
-			res.sendStatus(200);
-		} else {
-			res.sendStatus(401);
-		}
+		res.json(req.user);
 	};
 
 	this.logout = function (req, res) {
 		should.exist(req.logout);
 		req.logout();
-		res.redirect('/');
+		res.sendStatus(401);
 	};
 
 	this.getAllTodos = function (req, res) {

@@ -27,7 +27,7 @@ module.exports = function Router(app, passport, userService, log) {
 
 	this.router.post('/login', passport.authenticate('login'), userService.login);
 
-	this.router.get('/loggedin', userService.loginCheck);
+	this.router.get('/loggedin', auth, userService.loginCheck);
 
 	this.router.get('/logout', userService.logout);
 

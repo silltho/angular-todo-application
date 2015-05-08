@@ -1,8 +1,4 @@
-var urlBase = window.location.origin + "/"
-	+ window.location.pathname.split("/")[1];
-
 var todoApplication = angular.module('todoApplication', ['ngRoute', 'ngResource']);
-
 
 todoApplication.factory('Todo', function ($resource) {
 	return $resource('services/todos/:id', {
@@ -12,6 +8,52 @@ todoApplication.factory('Todo', function ($resource) {
 			method: 'PUT'
 		}
 	});
+});
+
+todoApplication.factory('User', function ($http, $location) {
+	var currentUser;
+	return {
+		login: function (username, password) {
+			$http.post('/login', {
+				username: username,
+				password: password
+			}).success(function (user) {
+				currentUser = user;
+				$location.path("/todoapp");
+			}).error(function () {
+				$location.path('/login');
+			});
+		},
+		signup: function (username, password, firstName, lastName, email) {
+			$http.post('/signup', {
+				username: username,
+				password: password,
+				firstName: firstName,
+				lastName: lastName,
+				email: email
+			}).success(function () {
+				$location.path("/login");
+			}).error(function () {
+				$location.path('/signup');
+			});
+		},
+		logout: function () {
+			$http.get('/logout').success(function () {
+				currentUser = null;
+				$location.path("/login");
+			});
+		},
+		currentUser: function () {
+			var promise = $http.get('/loggedin')
+				.success(function (data) {
+					return data;
+				})
+				.error(function (data) {
+					return false;
+				});
+			return promise;
+		}
+	};
 });
 
 todoApplication.directive('ngEnter', function () {
@@ -43,10 +85,14 @@ todoApplication.directive('autofocusWhen', function ($timeout) {
 	};
 });
 
-todoApplication.controller('toDoController', function ($scope, $http, Todo) {
+todoApplication.controller('toDoController', function ($scope, $http, Todo, User) {
+
 
 	$scope.init = function () {
-		$scope.allToDos = Todo.query();
+		User.currentUser().then(function (promise) {
+			$scope.currentUser = promise.data;
+			$scope.allToDos = promise.data.todos;
+		});
 	};
 
 	$scope.addToDo = function (toDo) {
@@ -90,52 +136,24 @@ todoApplication.controller('toDoController', function ($scope, $http, Todo) {
 	$scope.init();
 });
 
-todoApplication.controller('loginController', function ($rootScope, $scope, $http, $location, Todo) {
+todoApplication.controller('loginController', function ($rootScope, $scope, User) {
 	$scope.user = {};
-	// Register the login() function
-	$scope.login = function () {
-		$http.post('/login', {
-			username: $scope.user.username,
-			password: $scope.user.password,
-		}).success(function (user) {
-			// No error: authentication OK
-			$rootScope.message = 'Authentication successful!';
-			$location.path("/todoapp");
-			console.log($location.path());
-		}).error(function () {
-			// Error: authentication failed
-			$rootScope.message = 'Authentication failed.';
-			$location.path('/login');
-		});
+
+	$scope.login = function (username, password) {
+		User.login(username, password);
 	};
 
-	$scope.signup = function () {
-		$http.post('/signup', {
-			username: $scope.user.username,
-			password: $scope.user.password,
-		}).success(function (user) {
-			// No error: authentication OK
-			$rootScope.message = 'Signup successful!';
-			$location.path("/login");
-		}).error(function () {
-			// Error: authentication failed
-			$rootScope.message = 'Signup failed.';
-			$location.path('/signup');
-		});
+	$scope.signup = function (username, password, firstName, lastName, email) {
+		User.signup(username, password, firstName, lastName, email);
 	};
-
 });
 
 todoApplication.config(function ($routeProvider, $locationProvider, $httpProvider) {
 	var checkLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
-		// Initialize a new promise
 		var deferred = $q.defer();
-		// Make an AJAX call to check if the user is logged in
 		$http.get('/loggedin').success(function (user) {
-			// Authenticated
 			if (user !== '0')
 				deferred.resolve();
-			// Not Authenticated
 			else {
 				$rootScope.message = 'You need to log in.';
 				deferred.reject();
@@ -169,7 +187,7 @@ todoApplication.config(function ($routeProvider, $locationProvider, $httpProvide
 			templateUrl: '/html/services.html'
 		}).otherwise({
 			controller: 'toDoController',
-			templateUrl: '/html/todoapp.html',
-			resolve: {login: checkLoggedin}
+			templateUrl: '/html/todoapp.html'/*,
+			 resolve: {login: checkLoggedin}*/
 		});
 });
