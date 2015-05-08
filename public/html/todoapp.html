@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <div class="app-container">
     <div class="clearfix">
-        <h1 class="col-lg-8">ToDoApp - Applikation (AngularJS)</h1>
+        <h1 class="col-lg-8">TodoApplikation (AngularJS)</h1>
 
         <div class="col-lg-4 well well-sm" style="margin-bottom: 0px; margin-top: 5px;">
             <div class="media">
@@ -11,7 +11,7 @@
 
                 <div class="media-body">
                     <h4 class="media-heading">
-                        {{currentUser.username}} <a class="btn btn-xs btn-default pull-right" href="/logout">loggout</a>
+                        {{currentUser.username}} <a class="btn btn-xs btn-default pull-right" ng-click="User.logout()">loggout</a>
                     </h4>
                     {{currentUser.firstName}} {{currentUser.lastName}}
                 </div>

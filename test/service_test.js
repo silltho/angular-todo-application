@@ -13,31 +13,29 @@ describe('Service Tests', function () {
 		it("should signup user", function () {
 			var req = {};
 			var res = {};
-			var spy = res.sendStatus = sinon.spy();
+			var spy = res.json = sinon.spy();
 			req.user = test.createTestUser();
 
 			test.userService.signup(req, res);
 
 			spy.calledOnce.should.be.true;
-			spy.calledWith(200).should.be.true;
 		});
 
 		it("should login user", function () {
 			var req = {};
 			var res = {};
-			var spy = res.sendStatus = sinon.spy();
+			var spy = res.json = sinon.spy();
 			req.user = test.createTestUser();
 
 			test.userService.login(req, res);
 
 			spy.calledOnce.should.be.true;
-			spy.calledWith(200).should.be.true;
 		});
 
 		it("should check login of user", function () {
 			var req = {};
 			var res = {};
-			var spy = res.sendStatus = sinon.spy();
+			var spy = res.json = sinon.spy();
 			req.user = test.createTestUser();
 			req.isAuthenticated = function () {
 				return true;
@@ -46,7 +44,6 @@ describe('Service Tests', function () {
 			test.userService.loginCheck(req, res);
 
 			spy.calledOnce.should.be.true;
-			spy.calledWith(200).should.be.true;
 		});
 	});
 

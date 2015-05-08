@@ -1,4 +1,6 @@
 body {
+    /*background-image: url("http://www.unsigneddesign.com/Seamless_background_textures/1200px/seamlesstexture9_1200.jpg");
+    background-repeat: repeat;*/
     background-color: #555;
     height: 100%;
 }
@@ -107,7 +109,12 @@ body {
 }
 
 .media-left, .media > .pull-left {
+    margin-bottom: 10px;
     margin-right: 10px;
     padding: 4px;
     font-size: 20px;
+}
+
+.form-control-margin {
+    margin-bottom: 5px;
 }

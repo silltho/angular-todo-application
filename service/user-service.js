@@ -9,21 +9,21 @@ module.exports = function UserService(userDAO, passport, log) {
 
 	this.signup = function (req, res) {
 		should.exist(req.user.username);
-		res.sendStatus.should.be.a.function;
+		res.json.should.be.a.function;
 		log.info({'function': 'signup'}, 'successful signup user [%s]', req.user.username);
 		res.json(req.user);
 	};
 
 	this.login = function (req, res) {
 		should.exist(req.user.username);
-		res.sendStatus.should.be.a.function;
+		res.json.should.be.a.function;
 		log.info({'function': 'login'}, 'successful login user [%s]', req.user.username);
 		res.json(req.user);
 	};
 
 	this.loginCheck = function (req, res) {
 		should.exist(req.user);
-		res.sendStatus.should.be.a.function;
+		res.json.should.be.a.function;
 		res.json(req.user);
 	};
 

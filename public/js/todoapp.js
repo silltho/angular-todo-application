@@ -40,7 +40,7 @@ todoApplication.factory('User', function ($http, $location) {
 		logout: function () {
 			$http.get('/logout').success(function () {
 				currentUser = null;
-				$location.path("/login");
+				//$location.path("/#/login");
 			});
 		},
 		currentUser: function () {
@@ -87,12 +87,12 @@ todoApplication.directive('autofocusWhen', function ($timeout) {
 
 todoApplication.controller('toDoController', function ($scope, $http, Todo, User) {
 
-
 	$scope.init = function () {
 		User.currentUser().then(function (promise) {
 			$scope.currentUser = promise.data;
 			$scope.allToDos = promise.data.todos;
 		});
+		$scope.User = User;
 	};
 
 	$scope.addToDo = function (toDo) {
