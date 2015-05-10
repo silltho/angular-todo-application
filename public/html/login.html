@@ -11,8 +11,8 @@
             </div>
 
             <div class="panel-body">
-                <!--<div ng-show="message" id="login-alert" class="alert alert-danger col-lg-12" ng-model="message"></div>-->
-                <form id="loginform" class="form-horizontal" ng-submit="login(user.username, user.password)">
+                <div ng-show="errorMessage" id="login-alert" class="alert alert-danger col-lg-12">{{errorMessage}}</div>
+                <form id="loginform" class="form-horizontal col-lg-12" ng-submit="login(user.username, user.password)">
                     <input type="text" class="form-control form-control-margin" placeholder="Benutzername"
                            ng-model="user.username">
                     <input type="password" class="form-control form-control-margin" placeholder="Passwort"

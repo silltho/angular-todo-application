@@ -8,6 +8,7 @@ var path = require('path');
 var morgan = require('morgan');
 
 var UserService = require('./service/user-service');
+var ErrorService = require('./service/error-service');
 var PassportStrategies = require('./passport/passport-strategies');
 var UserDAO = require('./dao/user-dao');
 var Router = require('./routes/routes');
@@ -34,6 +35,8 @@ module.exports = function App(db, log) {
 		destination: './routes/routes.js'
 	}));
 
+	this.errorService = new ErrorService(log);
+
 	this.app.use(morgan('dev'));
 
 	this.app.use(bodyParser.json());
@@ -51,4 +54,7 @@ module.exports = function App(db, log) {
 	this.app.set('view engine', 'ejs');
 
 	this.app.use(this.router.router);
+
+	this.app.use(this.errorService.logError);
+	this.app.use(this.errorService.responseError);
 };

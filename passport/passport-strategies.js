@@ -6,14 +6,14 @@ module.exports = function PassportStrategies(userDAO, log) {
 	should.exist(userDAO);
 	should.exist(log);
 
-	this.signup = function (req, username, password, done) {
+	this.signup = function (req, username, password, next) {
 		should.exist(req.body.username);
 		should.exist(req.body.password);
-		/*should.exist(req.body.firstName);
+		should.exist(req.body.firstName);
 		should.exist(req.body.lastName);
-		 should.exist(req.body.email);*/
-		should.exist(done);
-		done.should.be.a.function;
+		should.exist(req.body.email);
+		should.exist(next);
+		next.should.be.a.function;
 
 		process.nextTick(function () {
 			log.info({'function': 'signup'}, 'check signup credentials of user with username = [%s]', req.body.username);
@@ -27,35 +27,39 @@ module.exports = function PassportStrategies(userDAO, log) {
 
 			userDAO.createUser(newUser, function (err, createdUser) {
 				if (err) {
-					return done(err);
+					return next(err);
 				}
 				log.info({'function': 'signup'}, 'successful signup user with username = [%s]', createdUser.username);
-				return done(null, createdUser);
+				return next(null, createdUser);
 			});
 		});
 	};
 
-	this.login = function (req, username, password, done) {
+	this.login = function (req, username, password, next) {
 		should.exist(req.body.username);
 		should.exist(req.body.password);
-		should.exist(done);
-		done.should.be.a.function;
+		should.exist(next);
+		next.should.be.a.function;
 
 		process.nextTick(function () {
 			log.info({'function': 'login'}, 'check login credentials of user with username = [%s]', req.body.username);
 			userDAO.readUsers({username: req.body.username}, function (err, foundUsers) {
 				if (err) {
-					return done(err);
+					return next(err);
 				}
 				if (foundUsers === false) {
-					return done(new Error('no user found with username = [' + req.body.username + '] in passport/passport-strategies.js#login'));
+					var err = new Error('no user found with username = [' + req.body.username + ']');
+					err.errorType = 'loginError';
+					return next(err);
 				} else {
 					foundUsers.forEach(function (user) {
 						if (isValidPassword(user.password, req.body.password)) {
 							log.info({'function': 'login'}, 'successful login user with username = [%s]', user.username);
-							return done(null, user);
+							return next(null, user);
 						} else {
-							return done(new Error('password of user with username = [' + user.username + '] is not valid in passport/signup.js#login'));
+							var err = new Error('password of user with username = [' + user.username + '] is not valid');
+							err.errorType = 'loginError';
+							return next(err);
 						}
 					});
 				}

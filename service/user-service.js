@@ -46,6 +46,9 @@ module.exports = function UserService(userDAO, passport, log) {
 		var user = getUserFromRequest(req);
 		var newTodo = user.createTodo(req.body.description);
 		userDAO.updateUser(user, function (err, numReplaced) {
+			if (err) {
+				return next(err);
+			}
 			res.json(newTodo);
 		});
 	};
@@ -61,6 +64,9 @@ module.exports = function UserService(userDAO, passport, log) {
 		if (user) {
 			var updatedTodo = user.updateTodo(todo);
 			userDAO.updateUser(user, function (err, numReplaced) {
+				if (err) {
+					return next(err);
+				}
 				res.json(updatedTodo);
 			});
 		}
@@ -73,6 +79,9 @@ module.exports = function UserService(userDAO, passport, log) {
 		var user = getUserFromRequest(req);
 		user.deleteTodo(req.params.id);
 		userDAO.updateUser(user, function (err, numReplaced) {
+			if (err) {
+				return next(err);
+			}
 			log.info({'function': 'deleteTodo'}, 'successful delete todo send 204');
 			res.sendStatus(204);
 		});

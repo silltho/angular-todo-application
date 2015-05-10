@@ -17,7 +17,9 @@ module.exports = function UserDAO(db, log) {
 				return done(err);
 			}
 			if (users.length !== 0) {
-				return done(new Error('user with username = [' + user.username + '] already exists in db/user-dao.js#createUser'));
+				var err = new Error('user with username = [' + user.username + '] already exists');
+				err.errorType = 'signupError';
+				return done(err);
 			} else {
 				db.insert(user, function (err, createdUser) {
 					if (err) {

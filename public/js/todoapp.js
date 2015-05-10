@@ -20,9 +20,10 @@ todoApplication.factory('User', function ($http, $location) {
 			}).success(function (user) {
 				currentUser = user;
 				$location.path("/todoapp");
-			}).error(function () {
-				$location.path('/login');
 			});
+			/*.error(function (err) {
+			 $location.path('/login').search({errorMessage: err});
+			 });*/
 		},
 		signup: function (username, password, firstName, lastName, email) {
 			$http.post('/signup', {
@@ -136,8 +137,9 @@ todoApplication.controller('toDoController', function ($scope, $http, Todo, User
 	$scope.init();
 });
 
-todoApplication.controller('loginController', function ($rootScope, $scope, User) {
+todoApplication.controller('loginController', function ($rootScope, $scope, $routeParams, User) {
 	$scope.user = {};
+	$scope.errorMessage = $routeParams.errorMessage;
 
 	$scope.login = function (username, password) {
 		User.login(username, password);
@@ -169,8 +171,11 @@ todoApplication.config(function ($routeProvider, $locationProvider, $httpProvide
 				return response;
 			},
 			responseError: function (response) {
-				if (response.status === 401)
-					$location.url('/login');
+				if (response.status === 401) {
+					$location.url('/login').search({errorMessage: response.data.message});
+				} else {
+					$location.search({errorMessage: response.data.message});
+				}
 				return $q.reject(response);
 			}
 		};
