@@ -11,19 +11,21 @@
             </div>
 
             <div class="panel-body">
-                <div ng-show="errorMessage" id="login-alert" class="alert alert-danger col-lg-12">{{errorMessage}}</div>
-                <form id="loginform" class="form-horizontal col-lg-12"
+                <div ng-show="signup_form.submitted && signup_form.signupError" class="alert alert-danger col-lg-12">
+                    {{signup_form.signupError.message}}
+                </div>
+                <form name="signup_form" class="form-horizontal col-lg-12"
                       ng-submit="signup(user.username, user.password, user.firstName, user.lastName, user.email)">
                     <input type="text" class="form-control form-control-margin" placeholder="Benutzername"
-                           ng-model="user.username">
+                           ng-model="user.username" required>
                     <input type="password" class="form-control form-control-margin" placeholder="Passwort"
-                           ng-model="user.password">
+                           ng-model="user.password" required>
                     <input type="text" class="form-control form-control-margin" placeholder="Vorname"
-                           ng-model="user.firstName">
+                           ng-model="user.firstName" required>
                     <input type="text" class="form-control form-control-margin" placeholder="Nachname"
-                           ng-model="user.lastName">
+                           ng-model="user.lastName" required>
                     <input type="text" class="form-control form-control-margin" placeholder="Email"
-                           ng-model="user.email">
+                           ng-model="user.email" required>
                     <hr>
                     <div>
                         <button id="btn-signup" type="submit" class="btn btn-success">Registrieren</button>

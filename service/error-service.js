@@ -10,10 +10,9 @@ module.exports = function ErrorService(log) {
 	};
 
 	this.responseError = function (err, req, res, next) {
-		debugger;
 		switch (err.errorType) {
 			case 'loginError':
-				res.status(401);
+				res.status(403);
 				break;
 			case 'signupError':
 				res.status(409);

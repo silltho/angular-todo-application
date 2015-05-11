@@ -1,29 +1,34 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>ToDo - Applikation (AngularJS Übung)</title>
-<link rel="shortcut icon" type="image/x-icon"
-	href="/img/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <title>ToDo - Applikation (AngularJS Übung)</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/img/favicon.ico"/>
 
-<link href="/lib/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
-<link href="/css/todoapp.css" rel="stylesheet">
+    <link href="/assets/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/todoapp.css" rel="stylesheet">
 
-<script type="text/javascript"
-	src="/lib/jquery/jquery-2.1.1.js"></script>
-<script type="text/javascript"
-	src="/lib/angularjs/1.3.11/angular.js"></script>
-<script type="text/javascript"
-	src="/lib/angularjs/1.3.11/angular-route.js"></script>
-<script type="text/javascript"
-	src="/lib/angularjs/1.3.11/angular-resource.js"></script>
-<script type="text/javascript"
-	src="/lib/bootstrap/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/todoapp.js"></script>
+    <script type="text/javascript" src="/assets/lib/jquery/jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular.js"></script>
+    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular-route.js"></script>
+    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular-resource.js"></script>
+    <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="/app/app.js"></script>
+    <script type="text/javascript" src="/app/config.js"></script>
+    <script type="text/javascript" src="/app/routes.js"></script>
+    <script type="text/javascript" src="/app/common/autofocus-when/autofocus-when-directive.js"></script>
+    <script type="text/javascript" src="/app/common/ng-enter/ng-enter-directive.js"></script>
+    <script type="text/javascript" src="/app/common/ng-enter/ng-enter-directive.js"></script>
+    <script type="text/javascript" src="/app/user/user-service.js"></script>
+    <script type="text/javascript" src="/app/user/user-controller.js"></script>
+    <script type="text/javascript" src="/app/todolist/todo-service.js"></script>
+    <script type="text/javascript" src="/app/todolist/todo-controller.js"></script>
+
 </head>
+
 <body ng-app="todoApplication">
-	<div class="wrapper">
-		<div ng-view></div>
-	</div>
+<div class="wrapper">
+    <div ng-view></div>
+</div>
 </body>
 </html>

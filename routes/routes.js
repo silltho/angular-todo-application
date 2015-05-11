@@ -38,4 +38,6 @@ module.exports = function Router(app, passport, userService, log) {
 	this.router.put('/services/todos/:id', auth, userService.updateTodo);
 
 	this.router.delete('/services/todos/:id', auth, userService.deleteTodo);
+
+
 };
