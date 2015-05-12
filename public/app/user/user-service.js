@@ -1,5 +1,5 @@
-angular.module('todoApplication').factory('User',
-	['$http', '$location', '$q', function ($http, $location, $q) {
+angular.module('todoApplication')
+	.service('userService', ['$http', '$location', '$q', function ($http, $location, $q) {
 		var currentUser;
 		return {
 			login: function (username, password) {
@@ -10,6 +10,7 @@ angular.module('todoApplication').factory('User',
 				}).success(function (data) {
 					currentUser = data;
 					$location.path("/todolist");
+					deferred.resolve(data);
 				}).error(function (data) {
 					deferred.reject(data);
 				});
@@ -32,19 +33,12 @@ angular.module('todoApplication').factory('User',
 				return deferred.promise;
 			},
 			logout: function () {
-				$http.get('/logout').success(function () {
+				return $http.get('/logout').success(function () {
 					currentUser = null;
 				});
 			},
 			currentUser: function () {
-				var promise = $http.get('/loggedin')
-					.success(function (data) {
-						return data;
-					})
-					.error(function (data) {
-						return false;
-					});
-				return promise;
+				return $http.get('/loggedin');
 			}
 		};
 	}]);

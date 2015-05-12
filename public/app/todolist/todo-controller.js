@@ -1,11 +1,10 @@
 angular.module('todoApplication').controller('toDoController',
-	['$scope', '$http', 'Todo', 'User', function ($scope, $http, Todo, User) {
-		$scope.init = function () {
-			User.currentUser().then(function (promise) {
-				$scope.currentUser = promise.data;
-				$scope.allToDos = promise.data.todos;
-			});
-			$scope.User = User;
+	['$scope', '$http', 'Todo', 'userService', 'currentUser', function ($scope, $http, Todo, userService, currentUser) {
+		$scope.currentUser = currentUser.data;
+		$scope.allToDos = currentUser.data.todos;
+
+		$scope.loggoutUser = function () {
+			userService.logout();
 		};
 
 		$scope.addToDo = function (toDo) {
@@ -45,6 +44,4 @@ angular.module('todoApplication').controller('toDoController',
 			}
 			return false;
 		};
-
-		$scope.init();
 	}]);

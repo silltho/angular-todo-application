@@ -11,18 +11,32 @@
             </div>
 
             <div class="panel-body">
-                <div ng-show="login_form.submitted && login_form.loginError" class="alert alert-danger col-lg-12">
+                <div ng-show="login_form.$submitted && login_form.loginError"
+                     class="alert alert-danger col-lg-12">
                     {{login_form.loginError.message}}
                 </div>
-                <form name="login_form" class="form-horizontal col-lg-12"
+
+                <form name="login_form"
+                      class="form-horizontal col-lg-12"
                       ng-submit="login(user.username, user.password)">
-                    <input type="text" name="username" class="form-control form-control-margin"
-                           ng-class="{'has-error': login_form.user.username.$dirty}"
-                           placeholder="Benutzername"
-                           ng-model="user.username" required>
-                    <input type="password" name="password" class="form-control form-control-margin"
-                           placeholder="Passwort"
-                           ng-model="user.password" required>
+                    <div class="form-group"
+                         ng-class="{'has-error': login_form.username.$dirty && login_form.username.$invalid}">
+                        <input type="text"
+                               name="username"
+                               class="form-control"
+                               placeholder="Benutzername"
+                               ng-model="user.username"
+                               required>
+                    </div>
+                    <div class="form-group"
+                         ng-class="{'has-error': login_form.password.$dirty && login_form.password.$invalid}">
+                        <input type="password"
+                               name="password"
+                               class="form-control form-control-margin"
+                               placeholder="Passwort"
+                               ng-model="user.password"
+                               required>
+                    </div>
                     <hr>
                     <div>
                         <button id="btn-login" type="submit" class="btn btn-success">Anmelden</button>

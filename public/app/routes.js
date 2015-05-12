@@ -9,6 +9,11 @@ angular.module('todoApplication').config(['$routeProvider', function ($routeProv
 		templateUrl: '/app/todolist/services.html'
 	}).otherwise({
 		controller: 'toDoController',
-		templateUrl: '/app/todolist/todolist.html'
+		templateUrl: '/app/todolist/todolist.html',
+		resolve: {
+			currentUser: ['userService', function (userService) {
+				return userService.currentUser();
+			}]
+		}
 	});
 }]);
