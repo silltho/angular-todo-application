@@ -8,9 +8,10 @@
     <link href="/assets/css/todoapp.css" rel="stylesheet">
 
     <script type="text/javascript" src="/assets/lib/jquery/jquery-2.1.1.js"></script>
-    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular.js"></script>
-    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular-route.js"></script>
-    <script type="text/javascript" src="/assets/lib/angularjs/1.3.11/angular-resource.js"></script>
+    <script type="text/javascript" src="/assets/lib/angularjs/angular.js"></script>
+    <script type="text/javascript" src="/assets/lib/angularjs/angular-ui-router.js"></script>
+    <!--<script type="text/javascript" src="/assets/lib/angularjs/angular-route.js"></script>-->
+    <script type="text/javascript" src="/assets/lib/angularjs/angular-resource.js"></script>
     <script type="text/javascript" src="/assets/lib/bootstrap/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="/app/app.js"></script>
@@ -28,7 +29,7 @@
 
 <body ng-app="todoApplication">
 <div class="wrapper">
-    <div ng-view></div>
+    <div ui-view></div>
 </div>
 </body>
 </html>

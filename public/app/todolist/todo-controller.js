@@ -26,22 +26,18 @@ angular.module('todoApplication').controller('toDoController',
 		};
 
 		$scope.updateToDo = function (toDo) {
-			toDo.$update().then(function (data) {
-				toDo.editing = false;
-			});
+			if (toDo instanceof Todo) {
+				toDo.$update().then(function (data) {
+					toDo.editing = false;
+				});
+			}
 		};
 
 		$scope.filterDone = function (item) {
-			if (item.done) {
-				return true;
-			}
-			return false;
+			return item.done;
 		};
 
 		$scope.filterNotDone = function (item) {
-			if (!item.done) {
-				return true;
-			}
-			return false;
+			return !item.done;
 		};
 	}]);

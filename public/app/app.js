@@ -1,1 +1,1 @@
-angular.module('todoApplication', ['ngRoute', 'ngResource']);
+angular.module('todoApplication', ['ui.router', 'ngResource']);

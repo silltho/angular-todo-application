@@ -38,7 +38,13 @@ angular.module('todoApplication')
 				});
 			},
 			currentUser: function () {
-				return $http.get('/loggedin');
+				if (currentUser == null) {
+					$http.get('/loggedin').success(function (data) {
+						currentUser = data;
+					})
+				} else {
+					return currentUser;
+				}
 			}
 		};
 	}]);
