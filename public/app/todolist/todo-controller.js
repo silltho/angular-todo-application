@@ -32,4 +32,12 @@ angular.module('todoApplication').controller('todosController',
 				});
 			}
 		};
+
+		this.filterDone = function (item) {
+			return item.done;
+		};
+
+		this.filterUndone = function (item) {
+			return !item.done;
+		};
 	}]);

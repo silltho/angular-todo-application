@@ -43,7 +43,7 @@
                     </form>
                 </td>
             </tr>
-            <tr ng-repeat="undoneTodo in todos | filter:undone as undoneTodos">
+            <tr ng-repeat="undoneTodo in todos | undone as undoneTodos">
                 <td ng-hide="undoneTodo.editing"
                     ng-click="undoneTodo.editing = true" class="col-lg-10">
                     <div class="editable-field">
@@ -74,7 +74,7 @@
             <span class="pull-right">Anzahl: {{doneTodos.length}}</span>
         </div>
         <table class="table table-striped panel-body">
-            <tr ng-repeat="doneTodo in todos | filter:done as doneTodos">
+            <tr ng-repeat="doneTodo in todos | done as doneTodos">
                 <td class="col-lg-10">{{doneTodo.description}}</td>
                 <td class="col-lg-2 text-right"><span
                         ng-click="doneTodo.done = false;todoCtrl.updateToDo(doneTodo)"
