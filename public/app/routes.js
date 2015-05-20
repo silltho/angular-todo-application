@@ -3,47 +3,41 @@ angular.module('todoApplication').config(['$stateProvider', '$urlRouterProvider'
 
 	$stateProvider
 		.state('todolist', {
-			url: '/todolist',
+			abstract: true,
 			templateUrl: '/app/todolist/todolist.html',
 			controller: 'todosController',
 			controllerAs: 'todoCtrl',
+			resolve: {
+				todos: ['Todo', function (Todo) {
+					return Todo.query();
+				}]
+			}
+		})
+		.state('todolist.userpanel', {
+			url: '/todolist',
+			templateUrl: '/app/user/user-panel.html',
+			controller: 'userController',
+			controllerAs: 'userCtrl',
 			resolve: {
 				currentUser: ['userService', function (userService) {
 					return userService.currentUser();
 				}]
 			}
 		})
-		.state('todolist.services', {
-			url: '/todolist/services',
-			templateUrl: '/app/todolist/services.html',
-			controller: 'todosController',
-			controllerAs: 'todoCtrl'
+		.state('services', {
+			url: '/services',
+			templateUrl: '/app/todolist/services.html'
 		})
 		.state('login', {
 			url: '/login',
 			templateUrl: '/app/user/login.html',
-			controller: 'userController'
+			controller: 'userController',
+			controllerAs: 'userCtrl'
 		})
 		.state('signup', {
 			url: '/signup',
 			templateUrl: '/app/user/signup.html',
-			controller: 'userController'
+			controller: 'userController',
+			controllerAs: 'userCtrl'
 		});
-	/*$routeProvider.when('/login', {
-	 controller: 'loginController',
-	 templateUrl: '/app/user/login.html'
-	 }).when('/signup', {
-	 controller: 'loginController',
-	 templateUrl: '/app/user/signup.html'
-	 }).when('/services', {
-	 templateUrl: '/app/todolist/services.html'
-	 }).otherwise({
-	 controller: 'toDoController',
-	 templateUrl: '/app/todolist/todolist.html',
-	 resolve: {
-	 currentUser: ['userService', function (userService) {
-	 return userService.currentUser();
-	 }]
-	 }
-	 });*/
 }]);

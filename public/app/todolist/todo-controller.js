@@ -1,11 +1,6 @@
 angular.module('todoApplication').controller('todosController',
-	['$scope', '$http', 'Todo', 'userService', 'currentUser', function ($scope, $http, Todo, userService, currentUser) {
-		$scope.currentUser = currentUser.data;
-		$scope.todos = currentUser.data.todos;
-
-		this.loggoutUser = function () {
-			userService.logout();
-		};
+	['$scope', '$http', 'Todo', 'todos', function ($scope, $http, Todo, todos) {
+		$scope.todos = todos;
 
 		this.addToDo = function (toDo) {
 			var toDoToAdd = new Todo();

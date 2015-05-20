@@ -1,0 +1,15 @@
+<div class="col-lg-4 well well-sm" style="margin-bottom: 0; margin-top: 5px;">
+    <div class="media">
+        <a class="thumbnail pull-left">
+            <span class="glyphicon glyphicon-user "></span>
+        </a>
+
+        <div class="media-body">
+            <h4 class="media-heading">
+                {{currentUser.username}} <a class="btn btn-xs btn-default pull-right"
+                                            ng-click="userCtrl.loggoutUser()">loggout</a>
+            </h4>
+            {{currentUser.firstName}} {{currentUser.lastName}}
+        </div>
+    </div>
+</div>

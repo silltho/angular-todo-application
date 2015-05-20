@@ -3,21 +3,7 @@
     <div class="clearfix">
         <h1 class="col-lg-8">TodoApplikation (AngularJS)</h1>
 
-        <div class="col-lg-4 well well-sm" style="margin-bottom: 0px; margin-top: 5px;">
-            <div class="media">
-                <a class="thumbnail pull-left">
-                    <span class="glyphicon glyphicon-user "></span>
-                </a>
-
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        {{currentUser.username}} <a class="btn btn-xs btn-default pull-right"
-                                                    ng-click="todoCtrl.loggoutUser()">loggout</a>
-                    </h4>
-                    {{currentUser.firstName}} {{currentUser.lastName}}
-                </div>
-            </div>
-        </div>
+        <div ui-view></div>
     </div>
     <hr>
     <div class="panel panel-info">
@@ -30,7 +16,7 @@
         <table class="table table-striped panel-body">
             <tr>
                 <td colspan="2">
-                    <form ng-submit="todoCtrl.addToDo(toDoAdd)" style="margin-bottom: 0px">
+                    <form ng-submit="todoCtrl.addToDo(toDoAdd)" style="margin-bottom: 0">
                         <div class="row">
                             <div class="col-lg-10">
                                 <input class="form-control" type="text"

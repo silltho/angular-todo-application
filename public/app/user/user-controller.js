@@ -1,19 +1,29 @@
 angular.module('todoApplication').controller('userController',
-	['$scope', '$http', '$location', 'userService', function ($scope, $http, $location, userService) {
-		$scope.login = function (username, password) {
+	['$scope', '$http', '$location', 'userService', '$injector', function ($scope, $http, $location, userService, $injector) {
+		if ($injector.has('currentUser')) {
+			$scope.currentUser = $injector.get('currentUser').data;
+		}
+
+		this.loggoutUser = function () {
+			userService.logout();
+		};
+
+		this.login = function (username, password) {
 			userService.login(username, password)
-				.then(function () {
+				.success(function (data) {
+					$scope.currentUser = data;
 					$location.path("/todolist");
-				}).catch(function (data) {
+				}).error(function (data) {
 					$scope.login_form.loginError = data;
 				});
 		};
 
-		$scope.signup = function (username, password, firstName, lastName, email) {
+		this.signup = function (username, password, firstName, lastName, email) {
 			userService.signup(username, password, firstName, lastName, email)
-				.then(function () {
+				.success(function (data) {
+					$scope.currentUser = data;
 					$location.path("/todolist");
-				}).catch(function (data) {
+				}).error(function (data) {
 					$scope.signup_form.signupError = data;
 				}).finally(function () {
 					$scope.signup_form.submitted = true;

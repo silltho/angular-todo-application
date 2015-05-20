@@ -17,7 +17,7 @@
                 </div>
                 <form name="signup_form"
                       class="form-horizontal col-lg-12"
-                      ng-submit="signup(user.username, user.password, user.firstName, user.lastName, user.email)">
+                      ng-submit="userCtrl.signup(user.username, user.password, user.firstName, user.lastName, user.email)">
                     <div class="form-group"
                          ng-class="{'has-error': signup_form.username.$invalid && signup_form.username.$dirty}">
                         <input type="text"
