@@ -5,7 +5,8 @@ angular.module('todoApplication').config(['$stateProvider', '$urlRouterProvider'
 		.state('todolist', {
 			url: '/todolist',
 			templateUrl: '/app/todolist/todolist.html',
-			controller: 'toDoController',
+			controller: 'todosController',
+			controllerAs: 'todoCtrl',
 			resolve: {
 				currentUser: ['userService', function (userService) {
 					return userService.currentUser();
@@ -15,17 +16,18 @@ angular.module('todoApplication').config(['$stateProvider', '$urlRouterProvider'
 		.state('todolist.services', {
 			url: '/todolist/services',
 			templateUrl: '/app/todolist/services.html',
-			controller: 'toDoController'
+			controller: 'todosController',
+			controllerAs: 'todoCtrl'
 		})
 		.state('login', {
 			url: '/login',
 			templateUrl: '/app/user/login.html',
-			controller: 'loginController'
+			controller: 'userController'
 		})
 		.state('signup', {
 			url: '/signup',
 			templateUrl: '/app/user/signup.html',
-			controller: 'loginController'
+			controller: 'userController'
 		});
 	/*$routeProvider.when('/login', {
 	 controller: 'loginController',

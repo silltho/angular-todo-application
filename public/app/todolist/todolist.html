@@ -11,7 +11,8 @@
 
                 <div class="media-body">
                     <h4 class="media-heading">
-                        {{currentUser.username}} <a class="btn btn-xs btn-default pull-right" ng-click="loggoutUser()">loggout</a>
+                        {{currentUser.username}} <a class="btn btn-xs btn-default pull-right"
+                                                    ng-click="todoCtrl.loggoutUser()">loggout</a>
                     </h4>
                     {{currentUser.firstName}} {{currentUser.lastName}}
                 </div>
@@ -24,12 +25,12 @@
             <h3 class="panel-title pull-left">
                 <strong>Zu Erledigen</strong>
             </h3>
-            <span class="pull-right">Anzahl: {{notDoneToDos.length}}</span>
+            <span class="pull-right">Anzahl: {{undoneTodos.length}}</span>
         </div>
         <table class="table table-striped panel-body">
             <tr>
                 <td colspan="2">
-                    <form ng-submit="addToDo(toDoAdd)" style="margin-bottom: 0px">
+                    <form ng-submit="todoCtrl.addToDo(toDoAdd)" style="margin-bottom: 0px">
                         <div class="row">
                             <div class="col-lg-10">
                                 <input class="form-control" type="text"
@@ -42,25 +43,25 @@
                     </form>
                 </td>
             </tr>
-            <tr ng-repeat="notDoneToDo in allToDos | filter:filterNotDone as notDoneToDos">
-                <td ng-hide="notDoneToDo.editing"
-                    ng-click="notDoneToDo.editing = true" class="col-lg-10">
+            <tr ng-repeat="undoneTodo in todos | filter:undone as undoneTodos">
+                <td ng-hide="undoneTodo.editing"
+                    ng-click="undoneTodo.editing = true" class="col-lg-10">
                     <div class="editable-field">
-                        {{notDoneToDo.description}} <span
+                        {{undoneTodo.description}} <span
                             class="glyphicon glyphicon-pencil pull-right"></span>
                     </div>
                 </td>
-                <td ng-show="notDoneToDo.editing" class="col-lg-10"><input
+                <td ng-show="undoneTodo.editing" class="col-lg-10"><input
                         ng-model="notDoneToDo.description"
                         ng-enter="updateToDo(notDoneToDo)"
-                        ng-blur="updateToDo(notDoneToDo)"
+                        ng-blur="todoCtrl.updateToDo(undoneTodo)"
                         autofocus-when="notDoneToDo.editing" ng-required
                         class="form-control" type="text"/>
                 </td>
                 <td class="col-lg-2 text-right"><span
-                        ng-click="notDoneToDo.done = true;updateToDo(notDoneToDo)"
+                        ng-click="undoneTodo.done = true;todoCtrl.updateToDo(undoneTodo)"
                         class="icon icon-done glyphicon glyphicon-ok"></span> <span
-                        ng-click="deleteToDo(notDoneToDo)"
+                        ng-click="todoCtrl.deleteToDo(undoneTodo)"
                         class="icon icon-delete glyphicon glyphicon-trash"></span></td>
             </tr>
         </table>
@@ -70,15 +71,15 @@
             <h3 class="panel-title pull-left">
                 <strong>Erledigt</strong>
             </h3>
-            <span class="pull-right">Anzahl: {{doneToDos.length}}</span>
+            <span class="pull-right">Anzahl: {{doneTodos.length}}</span>
         </div>
         <table class="table table-striped panel-body">
-            <tr ng-repeat="doneToDo in allToDos | filter:filterDone as doneToDos">
-                <td class="col-lg-10">{{doneToDo.description}}</td>
+            <tr ng-repeat="doneTodo in todos | filter:done as doneTodos">
+                <td class="col-lg-10">{{doneTodo.description}}</td>
                 <td class="col-lg-2 text-right"><span
-                        ng-click="doneToDo.done = false;updateToDo(doneToDo)"
+                        ng-click="doneTodo.done = false;todoCtrl.updateToDo(doneTodo)"
                         class="icon icon-undone glyphicon glyphicon-remove"></span> <span
-                        ng-click="deleteToDo(doneToDo,$index)"
+                        ng-click="todoCtrl.deleteToDo(doneTodo,$index)"
                         class="icon icon-delete glyphicon glyphicon-trash"></span></td>
             </tr>
         </table>

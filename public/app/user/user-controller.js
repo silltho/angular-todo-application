@@ -1,4 +1,4 @@
-angular.module('todoApplication').controller('loginController',
+angular.module('todoApplication').controller('userController',
 	['$scope', '$http', '$location', 'userService', function ($scope, $http, $location, userService) {
 		$scope.login = function (username, password) {
 			userService.login(username, password)
