@@ -1,10 +1,10 @@
 angular.module('todoApplication').controller('loginController',
-	['$scope', '$http', '$location', 'userService', function ($scope, $http, $location, userService) {
+	['$scope', '$state', '$http', '$location', 'userService', function ($scope, $state, $http, $location, userService) {
 
 		this.login = function (username, password) {
 			userService.login(username, password)
 				.success(function (data) {
-					$scope.currentUser = data;
+					$state.transitionTo('login.signin', {currentUser: data});
 					$location.path("/todolist");
 				}).error(function (data) {
 					$scope.login_form.loginError = data;

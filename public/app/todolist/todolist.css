@@ -1,0 +1,63 @@
+.icon {
+    cursor: pointer;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-right: 3px;
+    padding-top: 3px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    vertical-align: middle;
+}
+
+.icon-undone:hover {
+    box-shadow: 0 0 3px 3px #d9edf7;
+    border-color: #31708f;
+    color: #31708f;
+}
+
+.icon-done:hover {
+    box-shadow: 0 0 3px 3px #dff0d8;
+    border-color: #3c763d;
+    color: #3c763d;
+}
+
+.icon-delete:hover {
+    box-shadow: 0 0 3px 3px #f2dede;
+    border-color: #a94442;
+    color: #a94442;
+}
+
+.icon:active {
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 0;
+}
+
+.editable-field {
+    vertical-align: middle;
+    padding-left: 3px;
+}
+
+.editable-field:hover {
+    cursor: text;
+    box-shadow: 0 0 0 1px #c0c0c0;
+    border-radius: 3px;
+    background-color: #ffffff;
+}
+
+.editable-field > span {
+    visibility: hidden;
+    padding: 3px;
+    top: 0px;
+    border-left: 1px solid #c0c0c0;
+    background-color: #f0f0f0;
+}
+
+.editable-field:hover > span {
+    visibility: visible;
+}
+
+.cursor-pointer, .cursor-pointer:hover {
+    cursor: pointer;
+}

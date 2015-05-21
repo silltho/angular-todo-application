@@ -1,5 +1,5 @@
-angular.module('todoApplication').config(['$httpProvider', '$injector', function ($httpProvider, $injector) {
-	$httpProvider.interceptors.push(function ($q, $location, $injector) {
+angular.module('todoApplication').config(['$httpProvider', '$injector', function ($httpProvider) {
+	$httpProvider.interceptors.push(function ($q, $injector) {
 		return {
 			response: function (response) {
 				return response;

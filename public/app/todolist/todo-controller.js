@@ -1,30 +1,26 @@
 angular.module('todoApplication').controller('todosController',
-	['$scope', '$http', 'Todo', 'todos', function ($scope, $http, Todo, todos) {
+	['$scope', 'todoService', 'todos', function ($scope, todoService, todos) {
 		$scope.todos = todos;
 
-		this.addToDo = function (toDo) {
-			var toDoToAdd = new Todo();
-			toDoToAdd.description = toDo.description;
-			toDoToAdd.$save().then(function (data) {
+		this.addToDo = function (todo) {
+			todoService.createTodo(todo).then(function (data) {
 				$scope.todos.push(data);
 				$scope.toDoAdd = null;
 			});
 		};
 
-		this.deleteToDo = function (toDo) {
-			var index = $scope.allToDos.indexOf(toDo);
+		this.deleteToDo = function (todo) {
+			var index = $scope.todos.indexOf(todo);
 			if (index != -1) {
-				toDo.$delete().then(function (data) {
+				todoService.deleteTodo(todo).then(function () {
 					$scope.todos.splice(index, 1);
 				});
 			}
 		};
 
-		this.updateToDo = function (toDo) {
-			if (toDo instanceof Todo) {
-				toDo.$update().then(function (data) {
-					toDo.editing = false;
-				});
-			}
+		this.updateToDo = function (todo) {
+			todoService.updateTodo(todo).catch(function () {
+				todo.editing = true;
+			});
 		};
 	}]);
