@@ -2,26 +2,33 @@ angular.module('todoApplication').config(['$stateProvider', '$urlRouterProvider'
 	$urlRouterProvider.otherwise('/todolist');
 
 	$stateProvider
-		.state('todolist', {
+		.state('app', {
 			abstract: true,
-			templateUrl: '/app/todolist/todolist.html',
-			controller: 'todosController',
-			controllerAs: 'todoCtrl',
-			resolve: {
-				todos: ['Todo', function (Todo) {
-					return Todo.query();
-				}]
-			}
+			templateUrl: '/app/app.html'
 		})
-		.state('todolist.userpanel', {
+		.state('app.todolist', {
 			url: '/todolist',
-			templateUrl: '/app/user/user-panel.html',
-			controller: 'userController',
-			controllerAs: 'userCtrl',
-			resolve: {
-				currentUser: ['userService', function (userService) {
-					return userService.currentUser();
-				}]
+			views: {
+				'content': {
+					templateUrl: '/app/todolist/todolist.html',
+					controller: 'todosController',
+					controllerAs: 'todoCtrl',
+					resolve: {
+						todos: ['Todo', function (Todo) {
+							return Todo.query();
+						}]
+					}
+				},
+				'userpanel': {
+					templateUrl: '/app/user/user-panel.html',
+					controller: 'userController',
+					controllerAs: 'userCtrl',
+					resolve: {
+						currentUser: ['userService', function (userService) {
+							return userService.currentUser();
+						}]
+					}
+				}
 			}
 		})
 		.state('services', {
@@ -29,15 +36,19 @@ angular.module('todoApplication').config(['$stateProvider', '$urlRouterProvider'
 			templateUrl: '/app/todolist/services.html'
 		})
 		.state('login', {
-			url: '/login',
-			templateUrl: '/app/user/login.html',
-			controller: 'userController',
-			controllerAs: 'userCtrl'
+			abstract: true,
+			templateUrl: '/app/user/login.html'
 		})
-		.state('signup', {
+		.state('login.signin', {
+			url: '/signin',
+			templateUrl: '/app/user/signin.html',
+			controller: 'loginController',
+			controllerAs: 'loginCtrl'
+		})
+		.state('login.signup', {
 			url: '/signup',
 			templateUrl: '/app/user/signup.html',
-			controller: 'userController',
-			controllerAs: 'userCtrl'
+			controller: 'loginController',
+			controllerAs: 'loginCtrl'
 		});
 }]);

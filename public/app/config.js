@@ -6,8 +6,7 @@ angular.module('todoApplication').config(['$httpProvider', '$injector', function
 			},
 			responseError: function (response) {
 				if (response.status === 401) {
-					$injector.get('$state').transitionTo('login', {errorMessage: response.data.message});
-					//$location.path('/login').search({errorMessage: response.data.message});
+					$injector.get('$state').transitionTo('login.signin', {errorMessage: response.data.message});
 				}
 				return $q.reject(response);
 			}

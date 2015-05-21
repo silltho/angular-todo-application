@@ -1,0 +1,49 @@
+<!--<meta charset="utf-8">
+<div class="app-container">
+    <div class="clearfix">
+        <h1 class="col-lg-8">TodoApplikation - Login</h1>
+    </div>
+    <hr>
+    <div class="col-lg-6 col-lg-offset-3">-->
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="panel-title">Anmelden</div>
+    </div>
+
+    <div class="panel-body">
+        <div ng-show="login_form.$submitted && login_form.loginError"
+             class="alert alert-danger col-lg-12">
+            {{login_form.loginError.message}}
+        </div>
+
+        <form name="login_form"
+              class="form-horizontal col-lg-12"
+              ng-submit="loginCtrl.login(user.username, user.password)">
+            <div class="form-group"
+                 ng-class="{'has-error': login_form.username.$dirty && login_form.username.$invalid}">
+                <input type="text"
+                       name="username"
+                       class="form-control"
+                       placeholder="Benutzername"
+                       ng-model="user.username"
+                       required>
+            </div>
+            <div class="form-group"
+                 ng-class="{'has-error': login_form.password.$dirty && login_form.password.$invalid}">
+                <input type="password"
+                       name="password"
+                       class="form-control form-control-margin"
+                       placeholder="Passwort"
+                       ng-model="user.password"
+                       required>
+            </div>
+            <hr>
+            <div>
+                <button id="btn-login" type="submit" class="btn btn-primary">Anmelden</button>
+            </div>
+        </form>
+    </div>
+</div>
+<!--
+    </div>
+</div>-->
