@@ -32,3 +32,18 @@ build/Release
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+.idea/.name
+.idea/ToDo Applikation.iml
+.idea/codeStyleSettings.xml
+.idea/dictionaries/Thomas.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/jsLibraryMappings.xml
+.idea/jsLinters/jslint.xml
+.idea/libraries/ToDo_Applikation_node_modules.xml
+.idea/libraries/lib.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/workspace.xml
+db/db.db
