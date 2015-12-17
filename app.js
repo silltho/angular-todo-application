@@ -42,7 +42,7 @@ module.exports = function App(db, log) {
 	this.app.use(bodyParser.json());
 	this.app.use(bodyParser.urlencoded({extended: true}));
 
-	this.app.use(expressSession({secret: 'mySecretKey'}));
+	this.app.use(expressSession({secret: 'mySecretKey', resave: true, saveUninitialized: true}));
 	this.app.use(cookieParser());
 
 	this.app.use(passport.initialize());
