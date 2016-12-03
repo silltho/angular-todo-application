@@ -5,8 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node ./bin/start.js",
-    "test": "node ./bin/mocha.js",
-    "test-debug": "mocha --debug"
+    "test": "./node_modules/.bin/mocha",
+    "test-debug": "./node_modules/.bin/mocha --debug"
   },
   "repository": {
     "type": "git",
