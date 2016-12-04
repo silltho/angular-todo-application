@@ -13,7 +13,7 @@ module.exports = function PassportStrategies(userDAO, log) {
 		should.exist(req.body.lastName);
 		should.exist(req.body.email);
 		should.exist(next);
-		next.should.be.a.function;
+		next.should.be.type('function');
 
 		process.nextTick(function () {
 			log.info({'function': 'signup'}, 'check signup credentials of user with username = [%s]', req.body.username);
@@ -39,7 +39,7 @@ module.exports = function PassportStrategies(userDAO, log) {
 		should.exist(req.body.username);
 		should.exist(req.body.password);
 		should.exist(next);
-		next.should.be.a.function;
+		next.should.be.type('function');
 
 		process.nextTick(function () {
 			log.info({'function': 'login'}, 'check login credentials of user with username = [%s]', req.body.username);

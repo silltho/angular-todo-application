@@ -9,21 +9,21 @@ module.exports = function UserService(userDAO, passport, log) {
 
 	this.signup = function (req, res) {
 		should.exist(req.user.username);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 		log.info({'function': 'signup'}, 'successful signup user [%s]', req.user.username);
 		res.json(req.user);
 	};
 
 	this.login = function (req, res) {
 		should.exist(req.user.username);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 		log.info({'function': 'login'}, 'successful login user [%s]', req.user.username);
 		res.json(req.user);
 	};
 
 	this.loginCheck = function (req, res) {
 		should.exist(req.user);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 		res.json(req.user);
 	};
 
@@ -35,13 +35,13 @@ module.exports = function UserService(userDAO, passport, log) {
 
 	this.getAllTodos = function (req, res) {
 		should.exist(req.user.todos);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 		res.json(req.user.todos);
 	};
 
 	this.createTodo = function (req, res) {
 		should.exist(req.body.description);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 
 		var user = getUserFromRequest(req);
 		var newTodo = user.createTodo(req.body.description);
@@ -55,7 +55,7 @@ module.exports = function UserService(userDAO, passport, log) {
 
 	this.updateTodo = function (req, res) {
 		should.exist(req.body);
-		res.json.should.be.a.function;
+		res.json.should.be.type('function');
 
 		var user = getUserFromRequest(req);
 		var todo = req.body;
@@ -74,7 +74,7 @@ module.exports = function UserService(userDAO, passport, log) {
 
 	this.deleteTodo = function (req, res) {
 		should.exist(req.params.id);
-		res.sendStatus.should.be.a.function;
+		res.sendStatus.should.be.type('function');
 
 		var user = getUserFromRequest(req);
 		user.deleteTodo(req.params.id);

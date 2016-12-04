@@ -8,11 +8,11 @@ describe('Model Tests', function() {
 	it('should create User', function (done) {
 		var testUser = test.createTestUser();
 
-		testUser.username.should.exist;
-		testUser.password.should.exist;
-		testUser.email.should.exist;
-		testUser.firstName.should.exist;
-		testUser.lastName.should.exist;
+		testUser.username.should.not.be.null;
+		testUser.password.should.not.be.null;
+		testUser.email.should.not.be.null;
+		testUser.firstName.should.not.be.null;
+		testUser.lastName.should.not.be.null;
 		done();
 	});
 

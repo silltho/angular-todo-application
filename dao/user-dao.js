@@ -8,7 +8,7 @@ module.exports = function UserDAO(db, log) {
 	this.createUser = function (user, done) {
 		should.exist(user);
 		should.exist(done);
-		done.should.be.a.function;
+		done.should.be.type('function');
 
 		user.password = createHash(user.password);
 
@@ -36,7 +36,7 @@ module.exports = function UserDAO(db, log) {
 	{
 		should.exist(searchParams);
 		should.exist(done);
-		done.should.be.a.function;
+		done.should.be.type('function');
 
 		db.find(searchParams, function (err, users) {
 			if (err) {
@@ -57,7 +57,7 @@ module.exports = function UserDAO(db, log) {
 	{
 		should.exist(user);
 		should.exist(done);
-		done.should.be.a.function;
+		done.should.be.type('function');
 
 		db.update({_id: user._id}, user, function (err, numReplaced) {
 			if (err) {
@@ -73,7 +73,7 @@ module.exports = function UserDAO(db, log) {
 	{
 		should.exist(user);
 		should.exist(done);
-		done.should.be.a.function;
+		done.should.be.type('function');
 
 		db.remove({_id: user._id}, {}, function (err) {
 			if (err) {
